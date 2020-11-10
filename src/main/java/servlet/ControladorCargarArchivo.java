@@ -63,8 +63,10 @@ public class ControladorCargarArchivo extends HttpServlet {
         } catch (SAXException ex) {
             Logger.getLogger(ControladorCargarArchivo.class.getName()).log(Level.SEVERE, null, ex);
         }
-         String direccion = "index.jsp";
-        // response.sendRedirect(direccion);
+         String direccion = "jsp/mostrar-resultado-carga-archivo-xml.jsp";
+         request.getSession().setAttribute("errorMensaje", archivo_xml.MensajeResultadoCargaArchivo.getMensajeErrores());         
+         response.sendRedirect(direccion);
+         archivo_xml.MensajeResultadoCargaArchivo.resetMensajeErrores();
     }
     
     /**

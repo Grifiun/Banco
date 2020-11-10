@@ -41,15 +41,19 @@ public class Leer {
          * i = 3 "TRANSACCION"
          */
         for (int i = 0; i < 4; i++) {
-            NodeList listaNodoAux = listaXML.getListaNodos(entidades[i]);//obtenemos cada una de las listas de las entidades
-            
-            for(int j = 0;j < listaNodoAux.getLength(); j++){
-                Node nodoAux = listaNodoAux.item(j);//obtenemos nodo por nodo (conjunto de datos)
-                if(nodoAux.getNodeType() == Node.ELEMENT_NODE){
-                    Element elementAux = (Element) nodoAux; 
-                    //System.out.println(""+nodoAux.getNodeName());                    
-                    interpretarNodo(null, elementAux);                    
+            try{
+                NodeList listaNodoAux = listaXML.getListaNodos(entidades[i]);//obtenemos cada una de las listas de las entidades
+
+                for(int j = 0;j < listaNodoAux.getLength(); j++){
+                    Node nodoAux = listaNodoAux.item(j);//obtenemos nodo por nodo (conjunto de datos)
+                    if(nodoAux.getNodeType() == Node.ELEMENT_NODE){
+                        Element elementAux = (Element) nodoAux; 
+                        //System.out.println(""+nodoAux.getNodeName());                    
+                        interpretarNodo(null, elementAux);                    
+                    }
                 }
+            }catch(Exception ex){
+                
             }
         }
     }
