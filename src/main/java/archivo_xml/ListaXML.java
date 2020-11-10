@@ -33,7 +33,9 @@ public class ListaXML {
             this.doc = getDocumentFile(path);//obtenemos el archivo en formato file para reconocerlo como un archivo xml
             doc.getDocumentElement().normalize();
         }catch(SAXException ex){
-            System.out.println("error: " +ex);
+            MensajeResultadoCargaArchivo.setMensajeErrores("Error en la entrada de datos: \n" +ex.toString().substring(ex.toString().indexOf("lineNumber:"), ex.toString().length() - 1).replaceAll(";", "\\\n").trim());
+            
+            System.out.println("Error en la entrada de datos: \n" +ex.toString().substring(ex.toString().indexOf("lineNumber:"), ex.toString().length() - 1).replaceAll(";", "\\\n").trim());
         }  
     }
     

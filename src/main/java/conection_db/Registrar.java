@@ -45,6 +45,7 @@ public class Registrar {
                 cdp.crearDeclaracionPreparada(queryDato.get(i), query.get(i)).executeUpdate();
             } catch (SQLException ex) {
                 System.out.println("error: "+ ex.getMessage());
+                archivo_xml.MensajeResultadoCargaArchivo.setMensajeErrores(ex.getMessage());
             }
         }
     }
