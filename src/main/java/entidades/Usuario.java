@@ -9,7 +9,7 @@ package entidades;
  *
  * @author grifiun
  */
-public class Usuario extends EntidadBanco{
+public class Usuario {
     protected String codigo;
     protected String nombre;
     protected String dpi;
