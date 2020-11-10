@@ -6,6 +6,7 @@
 package archivo_xml;
 
 import conection_db.Registrar;
+import encriptador.Encriptar;
 import entidades.Gerente;
 import funciones.GenerarStringIdentificador;
 import java.util.ArrayList;
@@ -81,7 +82,13 @@ public class Leer {
                 //Agregamos a los arraylist
                 if(tagNodoHijoN.equalsIgnoreCase("CUENTAS") == false){
                     identificador.add(tagNodoHijoN.toLowerCase().replaceAll("-", "_"));//Agregamos los identificadores
-                    valores.add(valorNodoHijoN);//Agregamos los valores
+                    if(tagNodoHijoN.toLowerCase().replaceAll("-", "_").equalsIgnoreCase("password")){
+                        //Encriptamos las password
+                        encriptador.Encriptar encript = new Encriptar();
+                        valores.add(encript.encriptPass(valorNodoHijoN));//Agregamos los valores
+                    }else{
+                        valores.add(valorNodoHijoN);//Agregamos los valores
+                    }                    
                 }                
                 if (tagNodoHijoN.equalsIgnoreCase("CUENTAS") || tagNodoHijoN.equalsIgnoreCase("CUENTA")){//Recorremos todas las cuentas                   
                     interpretarNodo(datoAuxiliar,(Element) nodoHijoN.getChildNodes());
@@ -94,7 +101,7 @@ public class Leer {
         }        
         //Mostramos las querys        
         GenerarStringIdentificador gsi = new GenerarStringIdentificador();
-        //Primera parte de la query, agregamos al arraylist       
+        //Primera parte de la query, agregamos al arraylist      
                     
         if(elementAux.getNodeName().equalsIgnoreCase("CUENTAS") == false){
             //agregamos query
