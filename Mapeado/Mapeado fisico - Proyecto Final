@@ -1,0 +1,96 @@
+CREATE DATABASE BANCO;
+USE BANCO;
+CREATE TABLE CLIENTE(
+  codigo VARCHAR(20) NOT NULL,
+  nombre VARCHAR(60) NOT NULL,
+  dpi VARCHAR(25) NOT NULL,
+  birth DATE NOT NULL,
+  direccion VARCHAR(70) NOT NULL,
+  sexo VARCHAR(25) NOT NULL,
+  dpi_pdf VARCHAR(200) NOT NULL,
+  password VARCHAR(200) NOT NULL,
+  
+  CONSTRAINT PK_cliente PRIMARY KEY(codigo)
+);
+
+CREATE TABLE CAJERO(
+  codigo VARCHAR(20) NOT NULL,
+  nombre VARCHAR(60) NOT NULL,
+  turno VARCHAR(25) NOT NULL,
+  dpi VARCHAR(25) NOT NULL,
+  direccion VARCHAR(70) NOT NULL,
+  sexo VARCHAR(25) NOT NULL,
+  password VARCHAR(200) NOT NULL,
+  
+  CONSTRAINT PK_cajero PRIMARY KEY(codigo)
+);
+
+CREATE TABLE GERENTE(
+  codigo VARCHAR(20) NOT NULL,
+  nombre VARCHAR(60) NOT NULL,
+  turno VARCHAR(25) NOT NULL,
+  dpi VARCHAR(25) NOT NULL,
+  direccion VARCHAR(70) NOT NULL,
+  sexo VARCHAR(25) NOT NULL,
+  password VARCHAR(200) NOT NULL,
+  
+  CONSTRAINT PK_gerente PRIMARY KEY(codigo)
+);
+
+CREATE TABLE CUENTA(
+  codigo VARCHAR(20) NOT NULL,
+  cliente VARCHAR(20) NOT NULL,
+  creada DATE NOT NULL,
+  credito DECIMAL(11,2) NOT NULL,
+  
+  CONSTRAINT PK_cuenta PRIMARY KEY(codigo),
+  CONSTRAINT FK_cuenta_cliente FOREIGN KEY(cliente) REFERENCES CLIENTE(codigo) ON UPDATE CASCADE
+);
+
+CREATE TABLE ASOCIACION(
+  codigo VARCHAR(20) NOT NULL,  
+  estado VARCHAR(45) NOT NULL,
+  cliente_id VARCHAR(20) NOT NULL,
+  cuenta_asociada VARCHAR(20) NOT NULL,
+  
+  CONSTRAINT PK_asociacion PRIMARY KEY(codigo),
+  CONSTRAINT FK_asociacion_cliente FOREIGN KEY(cliente_id) REFERENCES CLIENTE(codigo) ON UPDATE CASCADE,
+  CONSTRAINT FK_asociacion_cuenta FOREIGN KEY(cuenta_asociada) REFERENCES CUENTA(codigo) ON UPDATE CASCADE
+);
+
+CREATE TABLE TRANSACCION(
+  codigo VARCHAR(20) NOT NULL,  
+  cuenta_id VARCHAR(20) NOT NULL,
+  fecha DATE NOT NULL,
+  hora TIME NOT NULL,
+  tipo VARCHAR(45) NOT NULL,
+  monto DECIMAL(11,2) NOT NULL,
+  cajero_id VARCHAR(20) NOT NULL,
+  
+  CONSTRAINT PK_transaccion PRIMARY KEY(codigo),
+  CONSTRAINT FK_transaccion_cajero FOREIGN KEY(cajero_id) REFERENCES CAJERO(codigo) ON UPDATE CASCADE,
+  CONSTRAINT FK_transaccion_cuenta FOREIGN KEY(cuenta_id) REFERENCES CUENTA(codigo) ON UPDATE CASCADE
+);
+
+CREATE TABLE LIMITE(
+  tipo VARCHAR(45) NOT NULL,
+  monto DECIMAL(11,2) NOT NULL,
+  
+  CONSTRAINT PK_limite PRIMARY KEY(tipo)
+);
+
+CREATE TABLE HISTORIAL(
+  codigo VARCHAR(20) NOT NULL,
+  usuario_id VARCHAR(20) NOT NULL,
+  rol_usuario VARCHAR(45) NOT NULL,
+  gerente_id VARCHAR(20) NOT NULL,
+  nombre_atributo VARCHAR(50) NOT NULL,
+  atributo_valor VARCHAR(200) NOT NULL,
+  atributo_nuevo_valor VARCHAR(200) NOT NULL,
+  fecha DATE NOT NULL,
+  hora TIME NOT NULL,
+  
+  CONSTRAINT PK_historial PRIMARY KEY(codigo),
+  CONSTRAINT FK_historial_gerente FOREIGN KEY(gerente_id) REFERENCES GERENTE(codigo) ON UPDATE CASCADE
+);
+
