@@ -16,8 +16,10 @@ import org.w3c.dom.NodeList;
 public class Gerente extends Usuario{
    private String turno;
    /**
-    * Sobreescribimos la funcion de cargar a un gerente
+    * Sobreescribimos la funcion de identificador a un gerente
     * @param elementoXML 
     */
-   
+   public Gerente(){
+       this.setIdentificador("GERENTE,codigo,nombre,turno,dpi,direccion,sexo,password");
+   }
 }

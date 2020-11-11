@@ -58,8 +58,11 @@ public class ControladorLogin extends HttpServlet {
             }                
         }  
         request.getSession().setAttribute("rol", usuarioRol);
+        System.out.println(usuarioRol);
         request.getSession().setAttribute("codigo", codigo);
         request.getSession().setAttribute("mensaje", "Bienvenido");
+        request.getSession().setAttribute("fecha_sistema", "2020-11-10");  
+        
         String direccion = "";
         switch(usuarioRol){
             case "":                 //no encuentra al usuario           
@@ -67,7 +70,8 @@ public class ControladorLogin extends HttpServlet {
                 response.sendRedirect(direccion);
                 break;
             default:
-                direccion = "jsp/home-"+usuarioRol+".jsp";
+                //direccion = "jsp/home-"+usuarioRol+".jsp";
+                direccion = "jsp/home.jsp";
                 response.sendRedirect(direccion);
                 break;
         }
