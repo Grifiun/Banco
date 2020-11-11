@@ -6,10 +6,10 @@
 package entidades;
 
 /**
- *
+ * Entidad de tipo usuario
  * @author grifiun
  */
-public class Usuario {
+public class Usuario extends EntidadBanco{
     protected String codigo;
     protected String nombre;
     protected String dpi;
@@ -17,4 +17,5 @@ public class Usuario {
     protected String sexo;
     protected String password;
     
+   
 }
