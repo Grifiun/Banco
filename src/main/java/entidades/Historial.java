@@ -6,14 +6,11 @@
 package entidades;
 
 /**
- * Entidad de tipo usuario
+ *
  * @author grifiun
  */
-public class Usuario extends EntidadBanco{
-    protected String nombre;
-    protected String dpi;
-    protected String direccion;
-    protected String sexo;
-    protected String password;    
-   
+public class Historial extends EntidadBanco{
+    public Historial(){
+       this.setIdentificador("HISTORIAL,codigo,usuario_id,rol_usuario,gerente_id,nombre_atributo,atributo_valor,atributo_nuevo_valor,fecha");
+   }
 }

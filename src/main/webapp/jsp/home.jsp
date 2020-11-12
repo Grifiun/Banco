@@ -9,8 +9,6 @@
 <html>
     <head>
         <%                  
-            String fecha = (String) session.getAttribute("fecha_sistema");
-            String codigo = (String) session.getAttribute("codigo");
             session.setAttribute("codigoAleatorio", "activado");
             String rol = (String) session.getAttribute("rol");
         %>

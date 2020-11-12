@@ -7,6 +7,7 @@ package conection_db;
 
 import funciones.GenerarStringIdentificador;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,39 +58,19 @@ public class Consultar {
      * @param dato
      * @return 
      */
-    public List<ArrayList<String>> obtenerRegistros(String tabla, ArrayList<String> atributosAObtener, ArrayList<String> atributoRestriccion, ArrayList<String> dato){
-        List<ArrayList<String>> resultadoTab = new ArrayList();
-        try {            
-            String queryAux = getQueryRSRegistros(tabla, atributosAObtener, atributoRestriccion);
-            System.out.println(queryAux);
-            ResultSet rs = crearResultSet(dato, queryAux);
-            while(rs.next()){//si hay otra fila
-                ArrayList<String> auxFila = new ArrayList<String>();//agregamos un axiliar para las filas
-                for(int i = 0; i < atributosAObtener.size(); i++){
-                //obtenemos todos los atributos
-                auxFila.add(rs.getString(atributosAObtener.get(i)));//obtenemos el atributo en cola
-                }
-                resultadoTab.add(new ArrayList<String>(auxFila));//agregamos la fila obtenida a la tabla                 
-                auxFila.clear(); //limpiamos el auxiliar
-            }
-            rs.close();
-        } catch (SQLException ex) {
-            System.out.println("ERROR AL OBTENER LA TABLA: "+ex);
-        } 
-        
-        return resultadoTab;
-    }   
-    
-    public List<ArrayList<String>> obtenerRegistros(String queryAux, ArrayList<String> atributosAObtener, ArrayList<String> dato){
+       
+    public List<ArrayList<String>> obtenerRegistros(String queryAux, ArrayList<String> dato){
         List<ArrayList<String>> resultadoTab = new ArrayList();
         try {            
             System.out.println(queryAux);
             ResultSet rs = crearResultSet(dato, queryAux);
+            
+            ResultSetMetaData rsmd = rs.getMetaData();//Obtenemos la metadata para las columnas                
             while(rs.next()){//si hay otra fila
                 ArrayList<String> auxFila = new ArrayList<String>();//agregamos un axiliar para las filas
-                for(int i = 0; i < atributosAObtener.size(); i++){
-                //obtenemos todos los atributos
-                auxFila.add(rs.getString(atributosAObtener.get(i)));//obtenemos el atributo en cola
+                for(int i = 1; i < rsmd.getColumnCount() + 1; i++){
+                    //obtenemos todos los atributos
+                    auxFila.add(rs.getString(i));//obtenemos el atributo en cola
                 }
                 resultadoTab.add(new ArrayList<String>(auxFila));//agregamos la fila obtenida a la tabla                 
                 auxFila.clear(); //limpiamos el auxiliar

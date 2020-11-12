@@ -1,0 +1,13 @@
+<% 
+    String cliente = (String) request.getParameter("cliente");
+    session.setAttribute("codigoAleatorio", "activado");//volvemos a activar la generacion del codigo aleatorio
+    session.setAttribute("fechaSistema", "activado");//volvemos a activar la generacion del codigo aleatorio
+%>
+<h1>INGRESO CUENTA PARA EL CLIENTE: <%=cliente%></h1>
+<form class="col-12 caja2" method="post" action="../ControladorIngresoRegistro?cliente=<%=cliente%>" >             
+    <div class="form-group align-self-start">
+        <h5>Credito inicial</h5>
+        <input type="number" class="form-control" required placeholder="credito" name="credito"/>
+    </div>       
+    <button type="submit" class="btn btn-dark">Registrar</button>
+</form>
