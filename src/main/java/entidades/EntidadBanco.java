@@ -11,6 +11,7 @@ package entidades;
  */
 public class EntidadBanco {
     protected String identificador;
+    protected String codigo;
 
     public String getIdentificador() {
         return identificador;

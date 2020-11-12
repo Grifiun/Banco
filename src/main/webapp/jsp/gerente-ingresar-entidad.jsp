@@ -14,7 +14,6 @@
             String rutaForm = "../html/ingresos-formularios/form-ingresar-"+tipoEntidad+".html";
         
             String rol = (String) session.getAttribute("rol");
-            String navRol = "../html/navs/nav-"+rol+".html";
         %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Ingreso <%=tipoEntidad%></title>        
@@ -22,9 +21,26 @@
         <link href="../css/style-ingresos.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <jsp:include page="<%=navRol%>"/>    
+        <%          
+            switch(rol){
+                case "gerente":%><%@include file="../html/navs/nav-gerente.html" %><%
+                    break; 
+                case "cliente":%><%@include file="../html/navs/nav-cliente.html" %><%
+                    break; 
+                case "cajero":%><%@include file="../html/navs/nav-cajero.html" %><%
+                    break; 
+            } 
+        %>
         <%@include file="../html/ingresos/parte-superior.html" %>
-        <jsp:include page="<%=rutaForm%>"/>
+        <%          
+            switch(tipoEntidad){
+                case "cuenta":%><%@include file="../html/ingresos-formularios/form-ingresar-cuenta.html" %><%
+                    break; 
+                default: %> <jsp:include page="<%=rutaForm%>"/><%
+                    break;
+            } 
+        %>
+        
         <%@include file="../html/ingresos/parte-inferior.html" %>
         <%@include file="../html/js-bootstrap.html"%>
     </body>

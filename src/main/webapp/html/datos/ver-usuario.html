@@ -1,0 +1,86 @@
+
+<h1>Datos cliente: <%=lista.get(0).get(0)%></h1>
+    <div id="accordion">
+    <%
+        for(int i = 1; i < lista.get(0).size(); i++){
+        //System.out.println(lista.get(0);
+    %> 
+       
+                 
+         <div class="card">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="<%='#'+identificador.get(i)%>" aria-expanded="false" aria-controls="collapseOne">
+                  <%=identificador.get(i)%>
+                </button>
+              </h5>
+            </div>
+            <div id="<%=identificador.get(i)%>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                  <%
+                    String redireccionAux = redireccion + "&atributo="+identificador.get(i)+"&restriccion=codigo&codigo="+lista.get(0).get(0)+"&atributo_valor="+lista.get(0).get(i)+
+                    "&gerente_id="+codigoGerente+"&rol_usuario="+rolUsuario;
+                  %>
+                  <form class="col-12 caja2" method="post" action="<%=redireccionAux%>" >
+                      <div class="form-group align-self-start">
+                        <h5>Nuevo valor: <%=identificador.get(i)%></h5>
+                        
+                        <%          
+                            switch(identificador.get(i)){
+                                case "birth": out.println("<input type='date' class='form-control' required placeholder='Fecha de nacimiento' name='birth'/>");
+                                    break; 
+                                case "sexo":                               
+                                %>
+                                <div class="form-group">
+                                    <select class="cont" name="sexo" id="sexo" required>
+                                        <option value="" disabled selected hidden>Seleccione el genero</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                    </select>
+                                </div>
+                                <%
+                                    break; 
+                                case "dpi_pdf":                               
+                                %>
+                                <div class="form-group align-self-start">
+                                    <h5>DPI en PDF</h5>
+                                    <input type="file" class="form-control" required placeholder="seleccione DPI" name="dpi_pdf"/>
+                                </div>  
+                                <%
+                                    break;
+                                case "turno":                               
+                                %>
+                                <div class="form-group align-self-start">
+                                    <select class="cont" name="turno" id="turno" required>
+                                        <option value="" disabled selected hidden>Seleccione el turno</option>
+                                        <option value="MATUTINO">Matutino</option>
+                                        <option value="VESPERTINO">Vespertino</option>
+                                    </select>
+                                </div>
+                                <%
+                                    break;
+                                case "password":                               
+                                %>
+                                    <input type='password' class='form-control' required placeholder="password" name='password'/>
+                                <%
+                                    break;
+                                default:
+                                %>
+                                <input type="text" class="form-control" required placeholder="<%=identificador.get(i)%>" name="<%=identificador.get(i)%>"/>
+                                <%
+                                    break;
+                            } 
+                        %>                     
+                        
+                        
+                      </div>
+                      <button type="submit" class="btn btn-dark">Actualizar</button>
+                  </form>
+              </div>
+            </div>
+          </div>
+    <%
+        }
+    %>    
+    
+    </div>

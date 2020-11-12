@@ -11,7 +11,7 @@ CREATE TABLE CLIENTE(
   password VARCHAR(200) NOT NULL,
   
   CONSTRAINT PK_cliente PRIMARY KEY(codigo)
-);
+); 
 
 CREATE TABLE CAJERO(
   codigo VARCHAR(20) NOT NULL,
@@ -88,7 +88,6 @@ CREATE TABLE HISTORIAL(
   atributo_valor VARCHAR(200) NOT NULL,
   atributo_nuevo_valor VARCHAR(200) NOT NULL,
   fecha DATE NOT NULL,
-  hora TIME NOT NULL,
   
   CONSTRAINT PK_historial PRIMARY KEY(codigo),
   CONSTRAINT FK_historial_gerente FOREIGN KEY(gerente_id) REFERENCES GERENTE(codigo) ON UPDATE CASCADE

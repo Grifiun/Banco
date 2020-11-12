@@ -28,7 +28,9 @@
           VER REGISTROS
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">#</a>
+          <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-clientes">Ver clientes</a>
+          <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-cajeros">Ver cajeros</a>
+          <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-gerentes">Ver gerentes</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="reportes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -48,8 +50,8 @@
       </li>
     </ul>
   </div>    
-  <a class="navbar-brand" href="#">USUARIO: <%=codigo%></a>
-  <a class="navbar-brand" href="#">FECHA: <%=fecha%></a>
+  <a class="navbar-brand" href="#">USUARIO: <%=(String) session.getAttribute("codigo")%></a>
+  <a class="navbar-brand" href="#">FECHA: <%=(String) session.getAttribute("fecha_sistema")%></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

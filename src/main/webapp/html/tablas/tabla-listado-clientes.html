@@ -1,0 +1,43 @@
+<%
+    ArrayList<String> listaDatosClientes = new ArrayList();
+    List<ArrayList<String>> listaClientes = cons.obtenerRegistros(query, 
+           new ArrayList<String>(listaDatosClientes));
+%>
+<h1>Listado clientes</h1>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+        <%
+                for(int i = 0; i < titulo.size(); i++){
+        %>            
+        <th scope="row"><%=titulo.get(i)%></th>
+        <%
+            }
+        %>
+    </tr>
+  </thead>
+  <tbody>
+      <%
+        for(int i = 0; i < listaClientes.size(); i++){
+      %>
+        <tr>
+            <th scope="row"><%=i + 1%></th>
+        <%
+            for(int j = 0; j < listaClientes.get(0).size() - 1; j++){
+        %>
+                <td><%=listaClientes.get(i).get(j)%></td>
+            <%
+            }
+            
+            %>
+            <td><a href="mostrar-datos-usuario.jsp?tipoQuery=listado-clientes&verUsuario=ver-cliente&codigoUsuario=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">1</a>
+            <a href="#" class="btn btn-success">2</a>
+            <a href="#" class="btn btn-success">3</a>
+            <a href="gerente-ingresar-entidad.jsp?tipoEntidad=cuenta&cliente=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">4</a></td>
+        </tr>
+      <%
+        }      
+      %>
+  </tbody>
+</table>

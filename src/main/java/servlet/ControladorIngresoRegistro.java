@@ -19,6 +19,7 @@ import registros.RealizarRegistroTabla;
 import conection_db.Consultar;
 import encriptador.Encriptar;
 import funciones.ObtenerIdentificador;
+import funciones.getAttributeParameterRequest;
 
 /**
  *
@@ -38,6 +39,8 @@ public class ControladorIngresoRegistro extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Instanciamos el metodo de obtener datos
+        getAttributeParameterRequest getAtorPar = new getAttributeParameterRequest(request);
         //Instaanciamos 
         RealizarRegistroTabla rrt;
         rrt = new RealizarRegistroTabla();
@@ -60,18 +63,21 @@ public class ControladorIngresoRegistro extends HttpServlet {
                 //encriptamos
                 Encriptar encrpt = new Encriptar();
                 //Class.forName("org.apache.commons.codec.Driver");
-                String auxPass = request.getParameter(rrt.getIdentificador().get(i));
+                //String auxPass = request.getParameter(rrt.getIdentificador().get(i));
+                String auxPass = getAtorPar.getAttributOrParameter(rrt.getIdentificador().get(i));
                 String auxEn = encrpt.getEncriptPass(auxPass);//encriptamos
                 rrt.addToDato(auxEn);                
             }//FECHAS
             else if(rrt.getIdentificador().get(i).equals("birth") ||
+                    rrt.getIdentificador().get(i).equals("creada") ||
                     rrt.getIdentificador().get(i).equals("fecha") &&
                     request.getSession().getAttribute("fechaSistema").equals("activado")){
                 //Si son fechas y la fecha del sistema esta activado
-                //Agregamos la fecha del sistema
+                //Agregamos la fecha del sistema                
                 rrt.addToDato((String)request.getSession().getAttribute("fecha_sistema"));            
             }else{//si es un dato ordinario (a recibir del request)
-                 rrt.addToDato(request.getParameter(rrt.getIdentificador().get(i)));
+                 //rrt.addToDato(request.getParameter(rrt.getIdentificador().get(i)));
+                 rrt.addToDato(getAtorPar.getAttributOrParameter(rrt.getIdentificador().get(i)));
             }
         }                 
         //registramos
@@ -103,7 +109,6 @@ public class ControladorIngresoRegistro extends HttpServlet {
         response.sendRedirect(direccion);
         
     }
-
     /**
      * Returns a short description of the servlet.
      *
@@ -114,4 +119,6 @@ public class ControladorIngresoRegistro extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    
+    
 }

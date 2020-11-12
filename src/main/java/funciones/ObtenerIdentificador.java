@@ -30,7 +30,13 @@ public class ObtenerIdentificador {
                break;
             case "cliente"://obtenemos el identificador
                identificadorAux = new Cliente().getIdentificador();  
-               break;               
+               break;   
+            case "cuenta"://obtenemos el identificador
+               identificadorAux = new Cuenta().getIdentificador();  
+               break; 
+            case "historial"://obtenemos el identificador
+               identificadorAux = new Historial().getIdentificador();  
+               break; 
        }       
        return identificadorAux;
     }
