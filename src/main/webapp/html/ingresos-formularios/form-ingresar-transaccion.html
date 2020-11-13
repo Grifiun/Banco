@@ -1,0 +1,13 @@
+<%
+    String tipoTransaccion = (String)request.getParameter("tipo_transaccion");
+    String tipoTransaccion1 = (String)request.getParameter("tipo_transaccion_real");
+%>
+<h1>INGRESO <%=tipoTransaccion%>: Paso 1 de 2</h1> 
+
+<form class="col-12 caja2" method="post" action="gerente-listar-datos.jsp?tipoListado=confirmar-numero-cuenta-transaccion&tipo_transaccion=<%=tipoTransaccion%>&tipo_transaccion_real=<%=tipoTransaccion1%>" > 
+     <div class="form-group align-self-start">
+        <h5>Ingrese el numero de cuenta a depositar</h5>
+        <input type="text" class="form-control" required placeholder="codigo" name="codigo"/>
+    </div>
+    <button type="submit" class="btn btn-dark">Siguiente</button>
+</form>

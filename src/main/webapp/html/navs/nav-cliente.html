@@ -13,7 +13,25 @@
           <a class="dropdown-item" href="cambiar-fecha.jsp">Cambiar fecha del sistema</a>
         </div>
       </li>
-     
+     <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="ingresos" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          ASOCIACIONES
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="gerente-ingresar-entidad.jsp?tipoEntidad=asociacion">Realizar solicitud de asociacion</a>
+          <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-solicitudes-asociacion-sin-responder">Responder solicitudes de asociacion</a>
+          <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-solicitudes-asociacion-aceptadas">Ver asociaciones aceptadas</a>
+          <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-solicitudes-asociacion-hechas">Ver asociaciones hechas y su estado</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="ingresos" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          REALIZAR TRANSFERENCIAS
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-cuentas-propias">Realizar transferencias</a>
+        </div>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="reportes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Sesion
@@ -26,6 +44,7 @@
   </div>    
   <a class="navbar-brand" href="#">USUARIO: <%=(String) session.getAttribute("codigo")%></a>
   <a class="navbar-brand" href="#">FECHA: <%=(String) session.getAttribute("fecha_sistema")%></a>
+    <a class="navbar-brand" href="#">HORA: <%=(String) session.getAttribute("hora_sistema")%></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

@@ -75,11 +75,15 @@ public class ControladorIngresoRegistro extends HttpServlet {
                 //Si son fechas y la fecha del sistema esta activado
                 //Agregamos la fecha del sistema                
                 rrt.addToDato((String)request.getSession().getAttribute("fecha_sistema"));            
+            }else if(rrt.getIdentificador().get(i).equals("hora")){
+                //Si son horas y la hora del sistema esta activado
+                //Agregamos la hora del sistema                
+                rrt.addToDato((String)request.getSession().getAttribute("hora_sistema"));            
             }else{//si es un dato ordinario (a recibir del request)
                  //rrt.addToDato(request.getParameter(rrt.getIdentificador().get(i)));
                  rrt.addToDato(getAtorPar.getAttributOrParameter(rrt.getIdentificador().get(i)));
             }
-        }                 
+        }            
         //registramos
         rrt.realizarRegistro();
         
@@ -105,8 +109,15 @@ public class ControladorIngresoRegistro extends HttpServlet {
         }
         request.getSession().setAttribute("codigoAleatorio", "activado");//volvemos a activar la generacion del codigo aleatorio
         request.getSession().setAttribute("fechaSistema", "activado");//volvemos a activar la generacion del codigo aleatorio
-        String direccion = "jsp/home.jsp";
-        response.sendRedirect(direccion);
+        
+        if(((String)request.getSession().getAttribute("redireccionarRegistro")) == null || ((String)request.getSession().getAttribute("redireccionarRegistro")).length() == 0){
+            String direccion = "jsp/home.jsp";
+            response.sendRedirect(direccion);
+        }else{
+            request.getSession().setAttribute("redireccionarRegistro", "");
+        }
+           
+        
         
     }
     /**

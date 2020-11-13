@@ -35,7 +35,11 @@
         <%          
             switch(tipoEntidad){
                 case "cuenta":%><%@include file="../html/ingresos-formularios/form-ingresar-cuenta.html" %><%
-                    break; 
+                    break;
+                case "asociacion":%><%@include file="../html/ingresos-formularios/form-ingresar-asociacion.html" %><%
+                    break;
+                case "transaccion":%><%@include file="../html/ingresos-formularios/form-ingresar-transaccion.html" %><%
+                    break;
                 default: %> <jsp:include page="<%=rutaForm%>"/><%
                     break;
             } 

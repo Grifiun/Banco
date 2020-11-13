@@ -1,0 +1,51 @@
+<%
+    ArrayList<String> listaDatosSolicitudesHechas = new ArrayList();
+    listaDatosSolicitudesHechas.add((String) session.getAttribute("codigo"));
+    List<ArrayList<String>> listaSolicitudesHechas = cons.obtenerRegistros(query, 
+           new ArrayList<String>(listaDatosSolicitudesHechas));
+%>
+<%
+    if(listaSolicitudesHechas.size() > 0){
+%>
+<h1>Listado solicitudes hechas</h1>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+        <%
+                for(int i = 0; i < titulo.size(); i++){
+        %>            
+        <th scope="row"><%=titulo.get(i)%></th>
+        <%
+            }
+        %>
+    </tr>
+  </thead>
+  <tbody>
+      <%
+        for(int i = 0; i < listaSolicitudesHechas.size(); i++){    
+       
+      %>
+        <tr>
+            <th scope="row"><%=i + 1%></th>
+        <%
+            for(int j = 0; j < listaSolicitudesHechas.get(0).size() - 1; j++){
+        %>
+                <td><%=listaSolicitudesHechas.get(i).get(j)%></td>
+            <%
+            }
+            
+            %>
+            </tr>
+      <%
+        }      
+      %>
+  </tbody>
+</table>
+<%
+    }else{
+%>
+<h1>No hay solicitudes hechas</h1>
+<%
+    }
+%>

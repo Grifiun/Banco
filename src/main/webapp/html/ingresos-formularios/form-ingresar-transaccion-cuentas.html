@@ -1,0 +1,62 @@
+<%
+    ArrayList<String> listaDatosIdCliente = new ArrayList();
+    listaDatosIdCliente.add((String)session.getAttribute("codigo"));
+    
+    List<ArrayList<String>> verCuentasCliente = cons.obtenerRegistros(query, 
+           new ArrayList<String>(listaDatosIdCliente));
+    
+    String query2 = queryObjeto.getQuery("listado-cuentas-asociadas");//obtenemos la query correspondiente  
+    List<ArrayList<String>> verCuentasAsociadas = cons.obtenerRegistros(query2, 
+           new ArrayList<String>(listaDatosIdCliente));
+               
+    List<ArrayList<String>> verCuentasDestino = new ArrayList();
+    //Agregamos todas las posibles cuentas de origen a una sola lista
+    for(int i = 0; i < verCuentasCliente.size(); i++){
+        verCuentasDestino.add(verCuentasCliente.get(i));        
+    }
+    for(int i = 0; i < verCuentasAsociadas.size(); i++){
+        verCuentasDestino.add(verCuentasAsociadas.get(i));        
+    }
+    
+%>
+<h1>TRANSACCION ENTRE CUENTAS PASO 1 de 2</h1> 
+<%
+    if(verCuentasCliente != null && verCuentasCliente.size() > 0){
+    //Mostrar cliente y formulario
+%>
+<form class="col-12 caja2" method="post" action="gerente-listar-datos.jsp?tipoListado=confirmar-monto-transferencia">
+    <h5>Seleccione la cuenta de origen:</h5>
+    <div class="form-group">
+        <select class="cont" name="cuenta_origen" id="sexo" required>
+            <option value="" disabled selected hidden>Seleccione la cuenta origen</option>
+            <%
+                for(int i = 0; i < verCuentasCliente.size(); i++){                    
+                        %> 
+                        <option value="<%=verCuentasCliente.get(i).get(0)%>"><%=verCuentasCliente.get(i).get(0)%> (<%=verCuentasCliente.get(i).get(1)%>)</option>
+                        <%                                   
+                }
+            %>
+        </select>
+    </div>
+    <h5>Seleccione la cuenta de destino</h5>
+    <div class="form-group">
+        <select class="cont" name="cuenta_destino" id="sexo" required>
+            <option value="" disabled selected hidden>Seleccione la cuenta origen</option>
+            <%
+                for(int i = 0; i < verCuentasDestino.size(); i++){                    
+                        %> 
+                        <option value="<%=verCuentasDestino.get(i).get(0)%>"><%=verCuentasDestino.get(i).get(0)%> (<%=verCuentasDestino.get(i).get(1)%>)</option>
+                        <%                                   
+                }
+            %>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-dark">Siguiente</button>
+</form>      
+<%
+    }else{
+%>
+        <h5>No puede realizar transacciones porque no posee cuentas bancarias</h5>
+<%
+    }
+%>

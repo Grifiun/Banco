@@ -1,0 +1,29 @@
+<%
+    ArrayList<String> listaDatosConfirmacionNCuenta2 = new ArrayList();
+    String cuenta_origen1 = (String) request.getParameter("cuenta_origen");
+    String cuenta_destino1 = (String) request.getParameter("cuenta_destino");
+    listaDatosConfirmacionNCuenta2.add(cuenta_origen1);
+    
+    List<ArrayList<String>> verCreditoCuenta = cons.obtenerRegistros(query, 
+           new ArrayList<String>(listaDatosConfirmacionNCuenta2));    
+%>
+
+<h1>TRANSACCION ENTRE CUENTAS PASO 2 de 2</h1> 
+<%
+    if(verCreditoCuenta != null && verCreditoCuenta.size() > 0){
+    String maximo1 = verCreditoCuenta.get(0).get(0);
+    //Mostrar cliente y formulario
+%>
+<form class="col-12 caja2" method="post" action="../ControladorIngresoTransferencia?cuenta_origen=<%=cuenta_origen1%>&cuenta_destino=<%=cuenta_destino1%>" > 
+    <h5>Cuentas seleccionadas:</h5>
+    <h5>Cuenta de origen: <%=cuenta_origen1%></h5>
+    <h5>Cuenta de destino: <%=cuenta_destino1%></h5> 
+    <div class="form-group align-self-start">
+        <h5>Ingrese el monto</h5>
+        <input type="number" class="form-control" min="1" max="<%=maximo1%>" required placeholder="monto maximo <%=maximo1%>" name="monto"/>  
+    </div>
+    <button type="submit" class="btn btn-dark">Siguiente</button>
+</form>
+<% 
+    }
+%>

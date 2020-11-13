@@ -39,8 +39,9 @@ public class Actualizar{
         queryAux.add(getQueryUpdateRegistros());
         //Agregamos los datos
         datoQueryAux.add(dato);
-        Registrar reg = new Registrar(datoQueryAux, queryAux);
+        Registrar reg = new Registrar(datoQueryAux, queryAux);        
         reg.realizarRegistro();
+        
     }
     
     /**

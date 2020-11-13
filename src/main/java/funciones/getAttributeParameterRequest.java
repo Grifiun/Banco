@@ -24,10 +24,25 @@ public class getAttributeParameterRequest {
     // Obtiene el nombre del atributo y retorna el valor correspondiente
     
     public String getAttributOrParameter(String nombreAtributo){
-        String aux = (String) request.getParameter(nombreAtributo);
-        if(aux == null)//usamos Attribute si Parameter no nos retorna nada
-            aux = (String) request.getAttribute(nombreAtributo);
-        
+        String aux = "";
+        try{
+            if(nombreAtributo.equalsIgnoreCase("credito")){
+                System.out.println("Es credito");
+                aux = (String) request.getAttribute(nombreAtributo);                
+                if(aux == null){//usamos Attribute si Parameter no nos retorna nada
+                    System.out.println("Valor: "+aux);
+                aux = (String) request.getParameter(nombreAtributo);
+                System.out.println("Valor: "+aux);
+                }
+            }else{
+                aux = (String) request.getParameter(nombreAtributo);
+                if(aux == null)//usamos Attribute si Parameter no nos retorna nada
+                aux = (String) request.getAttribute(nombreAtributo);
+            }
+            
+        }catch(Exception ex){
+            System.out.println("Error al obtener el atributo: "+nombreAtributo);
+        }
         return aux;
        
     }            

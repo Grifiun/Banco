@@ -1,0 +1,53 @@
+<%
+    ArrayList<String> listaDatosSolicitudesPendientes = new ArrayList();
+    listaDatosSolicitudesPendientes.add((String) session.getAttribute("codigo"));
+    List<ArrayList<String>> listaSolicitudes = cons.obtenerRegistros(query, 
+           new ArrayList<String>(listaDatosSolicitudesPendientes));
+%>
+<%
+    if(listaSolicitudes.size() > 0){
+%>
+<h1>Listado solicitudes por responder</h1>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+        <%
+                for(int i = 0; i < titulo.size(); i++){
+        %>            
+        <th scope="row"><%=titulo.get(i)%></th>
+        <%
+            }
+        %>
+    </tr>
+  </thead>
+  <tbody>
+      <%
+        for(int i = 0; i < listaSolicitudes.size(); i++){    
+       
+      %>
+        <tr>
+            <th scope="row"><%=i + 1%></th>
+        <%
+            for(int j = 0; j < listaSolicitudes.get(0).size() - 1; j++){
+        %>
+                <td><%=listaSolicitudes.get(i).get(j)%></td>
+            <%
+            }
+            
+            %>
+            <td><a href="../ControladorActualizarRegistro?tabla=ASOCIACION&atributo=estado&valorAtributo=aceptado&estado=aceptado&restriccion=codigo&codigo=<%=listaSolicitudes.get(i).get(0)%>" class="btn btn-success">Aceptar</a>
+                <a class="btn btn-danger" href="../ControladorActualizarRegistro?tabla=ASOCIACION&atributo=estado&valorAtributo=rechazado&&estado=rechazado&restriccion=codigo&codigo=<%=listaSolicitudes.get(i).get(0)%>" class="btn btn-success">Rechazar</a></td>
+        </tr>
+      <%
+        }      
+      %>
+  </tbody>
+</table>
+<%
+    }else{
+%>
+<h1>No hay solicitudes por responder</h1>
+<%
+    }
+%>
