@@ -53,6 +53,21 @@
                     break; 
                 case "listado-cajeros":%><%@include file="../html/tablas/tabla-listado-cajeros.html" %><%
                     break; 
+                case "confirmar-numero-cuenta":%><%@include file="../html/datos/ver-confirmacion-numero-cuenta.html" %><%
+                    break;
+                case "confirmar-numero-cuenta-transaccion":%><%@include file="../html/datos/ver-confirmacion-numero-cuenta-transaccion.html" %><%
+                    break;
+                    case "confirmar-monto-transferencia":%><%@include file="../html/datos/ver-confirmacion-monto-transferencia.html" %><%
+                    break;
+                case "listado-solicitudes-asociacion-sin-responder":%><%@include file="../html/tablas/tabla-listado-solicitudes-asosiacion-pendientes.html" %><%
+                    break;
+                case "listado-solicitudes-asociacion-aceptadas":%><%@include file="../html/tablas/tabla-listado-solicitudes-asociacion-aceptadas.html" %><%
+                    break;
+                case "listado-solicitudes-asociacion-hechas":%><%@include file="../html/tablas/tabla-listado-solicitudes-asosiacion-hechas.html" %><%
+                    break;
+                case "listado-cuentas-propias":%><%@include file="../html/ingresos-formularios/form-ingresar-transaccion-cuentas.html" %><%
+                    break;
+                
             } 
         %>      
         <%@include file="../html/ingresos/parte-inferior.html" %>

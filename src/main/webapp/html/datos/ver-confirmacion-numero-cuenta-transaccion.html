@@ -1,0 +1,52 @@
+<%
+    ArrayList<String> listaDatosConfirmacionNCuenta1 = new ArrayList();
+    String cuenta_asociada1 = (String) request.getParameter("codigo");
+    listaDatosConfirmacionNCuenta1.add(cuenta_asociada1);
+    
+    List<ArrayList<String>> verCliente1 = cons.obtenerRegistros(query, 
+           new ArrayList<String>(listaDatosConfirmacionNCuenta1));
+    
+    String cajero_id = (String)request.getSession().getAttribute("codigo");
+    
+    String tipoTransaccion = (String)request.getParameter("tipo_transaccion");
+    String tipoTransaccion1 = (String)request.getParameter("tipo_transaccion_real");
+%>
+
+<h1>INGRESO <%=tipoTransaccion%>: Paso 2 de 2</h1> 
+<%
+    if(verCliente1 != null && verCliente1.size() > 0){
+    String maximo = verCliente1.get(0).get(3);
+    //Mostrar cliente y formulario
+%>
+<form class="col-12 caja2" method="post" action="../ControladorIngresoTransaccion?transaccion_tipo=<%=tipoTransaccion1%>&cuenta_origen=<%=cuenta_asociada1%>&cajero_id=<%=cajero_id%>" > 
+    <h5>El cliente propietario de la cuenta que ingreso es:</h5>
+    <h5>Nombre <%=verCliente1.get(0).get(0)%></h5>
+    <h5>DPI: <%=verCliente1.get(0).get(1)%></h5>
+    <h5>Cuenta ingresada <%=cuenta_asociada1%></h5>    
+    <div class="form-group align-self-start">
+        <h5>Ingrese el monto</h5>
+        <%
+            if(tipoTransaccion.equals("Deposito")){
+                %>  
+                <input type="number" class="form-control" min="1" required placeholder="monto" name="monto"/>
+                <%            
+            }else{
+        %>
+                <input type="number" class="form-control" min="1" max="<%=maximo%>" required placeholder="monto maximo <%=maximo%>" name="monto"/>
+        <%        
+            
+            }
+        %>
+        </div>
+    <button type="submit" class="btn btn-dark">Siguiente</button>
+</form>
+<%
+    }else{
+%>
+<form class="col-12 caja2" method="post" action="gerente-ingresar-entidad.jsp?tipoEntidad=transaccion&tipo_transaccion=Deposito" > 
+    <h5>El numero de cuenta ingresada es incorrecta</h5>
+    <button type="submit" class="btn btn-dark">Volver</button>
+</form>     
+<%
+    }
+%>

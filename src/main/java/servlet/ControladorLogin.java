@@ -61,7 +61,8 @@ public class ControladorLogin extends HttpServlet {
         System.out.println(usuarioRol);
         request.getSession().setAttribute("codigo", codigo);
         request.getSession().setAttribute("mensaje", "Bienvenido");
-        request.getSession().setAttribute("fecha_sistema", "2020-11-10");  
+        request.getSession().setAttribute("fecha_sistema", "2020-11-10"); 
+        request.getSession().setAttribute("hora_sistema", "12:00:00"); 
         
         String direccion = "";
         switch(usuarioRol){

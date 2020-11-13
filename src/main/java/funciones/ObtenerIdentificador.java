@@ -37,6 +37,13 @@ public class ObtenerIdentificador {
             case "historial"://obtenemos el identificador
                identificadorAux = new Historial().getIdentificador();  
                break; 
+            case "asociacion"://obtenemos el identificador
+               identificadorAux = new Asociacion().getIdentificador();  
+               break; 
+            case "transaccion"://obtenemos el identificador
+               identificadorAux = new Transaccion().getIdentificador();  
+               break; 
+               
        }       
        return identificadorAux;
     }

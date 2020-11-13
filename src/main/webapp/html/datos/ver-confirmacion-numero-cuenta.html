@@ -1,0 +1,53 @@
+<%
+    ArrayList<String> listaDatosConfirmacionNCuenta = new ArrayList();
+    String cuenta_asociada = (String) request.getParameter("cuenta_asociada");
+    listaDatosConfirmacionNCuenta.add(cuenta_asociada);
+    
+    List<ArrayList<String>> verCliente = cons.obtenerRegistros(query, 
+           new ArrayList<String>(listaDatosConfirmacionNCuenta));
+    
+    List<ArrayList<String>> verIntentosAsociacion = cons.obtenerRegistros("SELECT cuenta_asociada, COUNT(*) AS cantidad FROM ASOCIACION WHERE cuenta_asociada = ? GROUP BY cuenta_asociada", 
+           new ArrayList<String>(listaDatosConfirmacionNCuenta));
+    String cliente_id = (String)request.getSession().getAttribute("codigo");
+    String intentosAsociacion = "0";
+    if(verIntentosAsociacion != null && verIntentosAsociacion.size() > 0){
+        intentosAsociacion = verIntentosAsociacion.get(0).get(1);      
+    }
+    
+%>
+<h1>INGRESO SOLICITUD DE ASOCIACION: Paso 2 de 2</h1> 
+<%
+    if(verCliente != null && verCliente.size() > 0 && Integer.parseInt(intentosAsociacion) < 3){
+    //Mostrar cliente y formulario
+%>
+<form class="col-12 caja2" method="post" action="../ControladorIngresoRegistro?cuenta_asociada=<%=cuenta_asociada%>&cliente_id=<%=cliente_id%>&estado=pendiente&tipoEntidad=asociacion&cliente_propietario_id=<%=verCliente.get(0).get(2)%>" > 
+    <h5>El cliente propietario de la cuenta que ingreso es:</h5>
+    <h5>Nombre <%=verCliente.get(0).get(0)%></h5>
+    <h5>DPI: <%=verCliente.get(0).get(1)%></h5>
+    <h5>Cuenta ingresada <%=cuenta_asociada%></h5>    
+    <h5>Cantidad de intentos de asociacion: <%=intentosAsociacion%> </h5>
+    <button type="submit" class="btn btn-dark">Siguiente</button>
+</form>
+<%
+    }else if(verCliente != null && verCliente.size() > 0 && Integer.parseInt(intentosAsociacion) > 2){
+    //Mostrar cliente y formulario
+%>
+<form class="col-12 caja2" method="post" action="gerente-ingresar-entidad.jsp?tipoEntidad=asociacion" > 
+    <h5>El cliente propietario de la cuenta que ingreso es:</h5>
+    <h5>Nombre <%=verCliente.get(0).get(0)%></h5>
+    <h5>DPI: <%=verCliente.get(0).get(1)%></h5>
+    <h5>Cuenta ingresada <%=cuenta_asociada%></h5>    
+    <h5>Cantidad de intentos de asociacion: <%=intentosAsociacion%> </h5>
+    <h5>Alcanzo el limite de solicitudes de asociacion, ya no puede realizar mas </h5>
+    <button type="submit" class="btn btn-dark">Volver</button>
+</form>       
+<%
+    }else{
+%>
+<form class="col-12 caja2" method="post" action="gerente-ingresar-entidad.jsp?tipoEntidad=asociacion" > 
+    <h5>El numero de cuenta ingresada es incorrecta</h5>
+    <button type="submit" class="btn btn-dark">Volver</button>
+</form>     
+<%
+    }
+%>
