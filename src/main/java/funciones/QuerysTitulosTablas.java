@@ -27,6 +27,12 @@ public class QuerysTitulosTablas {
             case "listado-cajeros"://Obtenemos todo el listado de los clientes
                 queryAux = "SELECT codigo, nombre, turno, dpi, direccion, sexo, password FROM CAJERO";
                 break;
+            case "listado-cuentas"://Obtenemos todo el listado de las cuentas de un cliente
+                queryAux = "SELECT * FROM CUENTA WHERE cliente = ?;";
+                break;
+            case "listado-transacciones-por-cuenta"://Obtenemos todo el listado de las cuentas de un cliente
+                queryAux = "SELECT cuenta_id, fecha, hora, tipo, monto, cajero_id FROM TRANSACCION WHERE cuenta_id = ? ORDER BY fecha DESC, hora DESC";
+                break;
             case "confirmar-numero-cuenta"://Para confirmar que el numero de cuenta ingresado es correcta
                 queryAux = "SELECT A.nombre, A.dpi, A.codigo FROM CLIENTE AS A JOIN CUENTA AS B on A.codigo = B.cliente WHERE B.codigo = ?";                
                 break;
@@ -55,7 +61,8 @@ public class QuerysTitulosTablas {
                 queryAux = "SELECT A.codigo, A.credito FROM CUENTA A WHERE A.codigo = ?;";               
                 break;
         
-        }        
+        }      
+        System.out.println(queryAux);
         return queryAux;
     }
     
@@ -66,6 +73,7 @@ public class QuerysTitulosTablas {
      */
     public String getTitulos (String tipoQuery){
         String tituloAux = "";
+        System.out.println("GET Listado titulos: "+tipoQuery);
         switch (tipoQuery){
             case "listado-clientes"://Obtenemos todo el listado de los clientes
                 tituloAux = "Codigo,Nombre,DPI,Fecha de nacimiento,Direccion,Sexo,DPI-PDF,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones 4.agregar cuenta";
@@ -75,6 +83,12 @@ public class QuerysTitulosTablas {
                 break;
             case "listado-cajeros"://Obtenemos todo el listado de los clientes
                 tituloAux = "Codigo,Nombre,Turno,DPI,Direccion,Sexo,Acciones: 1.Ver cajero 2.ver transacciones";
+                break;
+            case "listado-cuentas"://Obtenemos todo el listado de las cuentas de un cliente
+                tituloAux = "Codigo de cuenta,Codigo propietario,Creada en,Balance actual (Q),Transacciones";
+                break;
+            case "listado-transacciones-por-cuenta"://Obtenemos todo el listado de las cuentas de un cliente
+                tituloAux = "Codigo cuenta, Fecha, Hora, Tipo transaccion, Monto, Codigo del cajero";
                 break;
             case "ver-cliente"://Obtenemos todo el listado de los clientes
                 tituloAux = "codigo,nombre,dpi,birth,direccion,sexo,dpi_pdf,password";

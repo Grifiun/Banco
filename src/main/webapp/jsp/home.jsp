@@ -10,6 +10,7 @@
     <head>
         <%                  
             session.setAttribute("codigoAleatorio", "activado");
+            
             String rol = (String) session.getAttribute("rol");
         %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
