@@ -18,8 +18,8 @@ CREATE TABLE CAJERO(
   nombre VARCHAR(60) NOT NULL,
   turno VARCHAR(25) NOT NULL,
   dpi VARCHAR(25) NOT NULL,
-  direccion VARCHAR(70) NULL,
-  sexo VARCHAR(25) NULL,
+  direccion VARCHAR(70) NOT NULL,
+  sexo VARCHAR(25) NOT NULL,
   password VARCHAR(200) NOT NULL,
   
   CONSTRAINT PK_cajero PRIMARY KEY(codigo)
@@ -94,4 +94,8 @@ CREATE TABLE HISTORIAL(
   CONSTRAINT FK_historial_gerente FOREIGN KEY(gerente_id) REFERENCES GERENTE(codigo) ON UPDATE CASCADE
 );
 
-INSERT INTO CLIENTE (codigo, nombre, turno, dpi, password) VALUES ("101","Banca Virtual", "Toda hora", "101", "8cX7%%tedj4!yJm4")
+INSERT INTO CAJERO (codigo, nombre, turno, dpi, password, direccion, sexo) VALUES ("101","Banca Virtual", "Toda hora", "101", "8cX7%%tedj4!yJm4", "Banca", "Banca");
+
+INSERT INTO LIMITE VALUES ("Limite por transaccion", "10000");
+INSERT INTO LIMITE VALUES ("Limite por suma de transaccion", "30000");
+

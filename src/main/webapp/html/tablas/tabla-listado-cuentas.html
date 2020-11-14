@@ -1,0 +1,59 @@
+<%
+    restriccionLista = new ArrayList();
+    String clienteAux = request.getParameter("cliente-id");
+    if(rol.equals("cliente"))
+        clienteAux = (String) session.getAttribute("codigo");
+    restriccionLista.add(clienteAux);
+    
+    lista = cons.obtenerRegistros(query, 
+           new ArrayList<String>(restriccionLista));
+%>
+<h1>Listado cuentas</h1>
+<%   
+    if(lista != null && lista.size() > 0){
+        //listamos las cuentas porque existen
+       %>  
+       <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                  <%
+                          for(int i = 0; i < titulo.size(); i++){
+                  %>            
+                  <th scope="row"><%=titulo.get(i)%></th>
+                  <%
+                      }
+                  %>
+              </tr>
+            </thead>
+            <tbody>
+                <%
+                  for(int i = 0; i < lista.size(); i++){
+                %>
+                  <tr>
+                      <th scope="row"><%=i + 1%></th>
+                  <%
+                      for(int j = 0; j < lista.get(0).size(); j++){
+                  %>
+                          <td><%=lista.get(i).get(j)%></td>
+                      <%
+                      }
+
+                      %>
+                      <td>
+                          <a href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-por-cuenta&cuenta-id=<%=lista.get(i).get(0)%>" class="btn btn-success">Ver</a>
+                      </td>
+                  </tr>
+                <%
+                  }      
+                %>
+            </tbody>
+        </table>
+       <%
+    
+    }else{
+%>
+    <h5>Este cliente no posee cuentas bancarias</h5>
+<% 
+    }
+%>

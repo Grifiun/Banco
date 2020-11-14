@@ -20,7 +20,12 @@
         //el tipod e tabla a usar
         String tipoQuery = (String) request.getParameter("tipoQuery");
         String verUsuario = (String) request.getParameter("verUsuario");
-        String codigoUsuario = (String) request.getParameter("codigoUsuario");        
+        String codigoUsuario = (String) request.getParameter("codigoUsuario");  
+        
+        if(verUsuario.equalsIgnoreCase("ver-gerente")){
+            codigoUsuario = codigoGerente;
+        }
+        
         //arreglo de restricciones a cumplir
         ArrayList<String> listaDatosRestriccion = new ArrayList();
         listaDatosRestriccion.add(codigoUsuario);
@@ -47,6 +52,10 @@
             case "ver-cajero":
                 redireccion = "../ControladorActualizarRegistro?tabla=CAJERO";
                 rolUsuario = "CAJERO";
+                break;
+            case "ver-gerente":
+                redireccion = "../ControladorActualizarRegistro?tabla=GERENTE";
+                rolUsuario = "GERENTE";
                 break;
         }
         %>   
