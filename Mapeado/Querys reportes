@@ -1,0 +1,510 @@
+SELECT A.nombre, A.dpi FROM CLIENTE AS A JOIN CUENTA AS B on A.codigo = B.cliente WHERE B.codigo = "21175421";
+//Mostrar asociaciones de cuentas
+SELECT cuenta_asociada, COUNT(*) AS cantidad FROM ASOCIACION WHERE cuenta_asociada = "15975428" GROUP BY cuenta_asociada
+//Mostrar cuentas sin asociacion tambien
+SELECT 
+    A.cuenta_asociada, 
+    COUNT(*) AS cantidad 
+FROM 
+    ASOCIACION AS A RIGHT JOIN CUENTA AS B 
+ON 
+    A.cuenta_asociada = B.codigo 
+WHERE 
+    B.codigo = "21175421"
+    AND A.estado IS NOT NULL  
+GROUP BY A.cuenta_asociada;
+
+SELECT 
+    A.cuenta_asociada
+FROM 
+    ASOCIACION AS A RIGHT JOIN CUENTA AS B 
+ON 
+    A.cuenta_asociada = B.codigo 
+
+
+//Mostrar solicitudes de asociacion recibidas
+SELECT * FROM ASOCIACION WHERE cliente_propietario_id = ?;
+
+SELECT * FROM ASOCIACION WHERE cliente_propietario_id = 'CLI12';
+//cuentas propias
+SELECT codigo, credito FROM CUENTA B WHERE B.cliente = "CLI4175";
+SELECT B.codigo, C.nombre, B.credito FROM CUENTA B JOIN CLIENTE C ON B.cliente = C.codigo WHERE B.cliente = "CLI4175";
+//cuentas asociadas
+SELECT A.cuenta_asociada, C.nombre, B.credito FROM ASOCIACION A JOIN CUENTA B ON A.cuenta_asociada = B.codigo JOIN CLIENTE C ON B.cliente = C.codigo WHERE A.cliente_id = "CLI4860" && estado='aceptado';
+
+
+//Obtener cuentas 
+SELECT * FROM CUENTA WHERE cliente = ?;
+//Obtener transacciones de cuentas
+SELECT cuenta_id, fecha, hora, tipo, monto, cajero_id FROM TRANSACCION WHERE cuenta_id = ? ORDER BY fecha DESC, hora DESC;
+
+
+REPORTES GERENTE
+////////////////////////////////////////////////////1.Ver clientes con transacciones mayores a un limite (035)
+//Limite por transaccion
+    SELECT monto FROM LIMITE WHERE tipo = 'Limite por transaccion';
+//Transacciones que superan ese limite
+    SELECT * FROM TRANSACCION A WHERE A.monto > 1000;
+    SELECT A.cuenta_id, A.monto FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL AND B.tipo = "Limite por transaccion" WHERE A.monto > B.monto;
+    +-----------+---------+
+    | cuenta_id | monto   |
+    +-----------+---------+
+    | CUE3150   | 5000.00 |
+    | CUE5819   | 2400.00 |
+    | CUE5819   | 3000.00 |
+    | CUE5819   | 3000.00 |
+    | CUE3150   | 3000.00 |
+    | CUE3150   | 3000.00 |
+    | CUE3150   | 2400.00 |
+    | CUE5819   | 3000.00 |
+    | CUE3150   | 3000.00 |
+    | CUE5819   | 3000.00 |
+    | CUE6083   | 2500.00 |
+    | CUE3150   | 3000.00 |
+    | CUE5819   | 3000.00 |
+    | CUE3150   | 3000.00 |
+    | CUE5819   | 2500.00 |
+    +-----------+---------+
+
+
+//Agrupar por cuenta
+    SELECT A.cuenta_id FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL AND B.tipo = "Limite por transaccion" WHERE A.monto > B.monto GROUP BY A.cuenta_id;
+    +-----------+
+    | cuenta_id |
+    +-----------+
+    | CUE3150   |
+    | CUE5819   |
+    | CUE6083   |
+    +-----------+
+
+//Obtener codigo propietarios
+    SELECT C.cliente FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL AND B.tipo = "Limite por transaccion" JOIN CUENTA C ON C.codigo = A.cuenta_id WHERE A.monto > B.monto GROUP BY C.cliente;
+    +---------+
+    | cliente |
+    +---------+
+    | CLI4860 |
+    | CLI4175 |
+    +---------+
+//Obtener datos codigo propietarios
+    //RESULTADO
+    SELECT D.codigo, D.nombre, D.dpi, D.birth, D.direccion, D.sexo FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL AND B.tipo = "Limite por transaccion" JOIN CUENTA C ON C.codigo = A.cuenta_id JOIN CLIENTE D ON C.cliente = D.codigo WHERE A.monto > B.monto GROUP BY C.cliente;
++---------+---------------------------+-----------+------------+-----------+-----------+
+| codigo  | nombre                    | dpi       | birth      | direccion | sexo      |
++---------+---------------------------+-----------+------------+-----------+-----------+
+| CLI4860 | CLIENTE PRUEBA 1          | 201830121 | 2020-11-10 | addd      | Masculino |
+| CLI4175 | Cliente a tener solicitud | 123123132 | 2020-11-10 | a4444     | Femenino  |
++---------+---------------------------+-----------+------------+-----------+-----------+
+
+//CONFIRMACION
+mysql> SELECT * FROM CUENTA;
++-----------+---------+------------+----------+
+| codigo    | cliente | creada     | credito  |
++-----------+---------+------------+----------+
+| 15975428  | CLI1    | 2015-05-07 |  2000.12 |
+| 159754282 | CLI2    | 2015-05-07 |  2000.12 |
+| 21175421  | CLI1    | 2015-08-17 |  2000.12 |
+| 211754221 | CLI2    | 2015-08-17 |  2000.12 |
+| CUE3150   | CLI4860 | 2020-11-10 |  7000.00 |////
+| CUE5819   | CLI4175 | 2020-11-10 | 11000.00 |////
+| CUE6083   | CLI4860 | 2020-11-10 |  3000.00 |
+| CUE7396   | CLI1    | 2020-11-10 |  2000.00 |
++-----------+---------+------------+----------+
+PARTE 2: Ver esas transacciones
+    SELECT A.* FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL AND B.tipo = "Limite por transaccion" JOIN CUENTA C ON C.codigo = A.cuenta_id WHERE A.monto > B.monto AND C.cliente = "CLI4860" ORDER BY A.fecha DESC, A.hora DESC, A.monto DESC;
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo                     | monto   | cajero_id |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO                  | 5000.00 | CAJ4489   |
+| TRA2883  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4053  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4448  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5311  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA8180  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5234  | CUE6083   | 2020-11-10 | 12:00:00 | DEBITO POR TRANSFERENCIA | 2500.00 | 101       |
+| TRA4089  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2400.00 | 101       |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+
+////////////////////////////////////////////////////2. Ver clientes con suma   de transacciones mayores a un limite (036)
+//Limite por transaccion
+    SELECT monto FROM LIMITE WHERE tipo = 'Limite por suma de transaccion';
+//Obtener transacciones con suma total agrupado por cuentas
+    SELECT A.cuenta_id, SUM(A.monto) FROM TRANSACCION A GROUP BY A.cuenta_id;
+    +-----------+--------------+
+    | cuenta_id | SUM(A.monto) |
+    +-----------+--------------+
+    | 15975428  |       156.75 |
+    | 159754282 |       156.75 |
+    | CUE3150   |     40400.00 |
+    | CUE5819   |     33900.00 |
+    | CUE6083   |      2500.00 |
+    +-----------+--------------+
+
+//Obtener transacciones con suma total agrupado por clientes
+    SELECT C.cliente, SUM(A.monto) FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL JOIN CUENTA C ON C.codigo = A.cuenta_id GROUP BY C.cliente;
++---------+--------------+
+| cliente | SUM(A.monto) |
++---------+--------------+
+| CLI2    |       313.50 |
+| CLI1    |       313.50 |
+| CLI4860 |     85800.00 |
+| CLI4175 |     67800.00 |ERROR: Obtiene el doble
+    SELECT C.cliente, SUM(A.monto) FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL AND B.tipo = "Limite por suma de transaccion" JOIN CUENTA C ON C.codigo = A.cuenta_id GROUP BY C.cliente;
++---------+--------------+
+| cliente | SUM(A.monto) |
++---------+--------------+
+| CLI2    |       156.75 |
+| CLI1    |       156.75 |
+| CLI4860 |     42900.00 |
+| CLI4175 |     33900.00 |
++---------+--------------+
+    //Obtener clientes que superan el limite por suma de transacciones
+    //RESULTADO
+    SELECT D.cliente, D.total 
+    FROM (SELECT C.cliente, SUM(A.monto) AS total FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id GROUP BY C.cliente) AS D
+    JOIN LIMITE B ON D.cliente IS NOT NULL AND B.tipo = "Limite por suma de transaccion" 
+    WHERE D.total > B.monto;
++---------+----------+
+| cliente | total    |
++---------+----------+
+| CLI4860 | 42900.00 |
+| CLI4175 | 33900.00 |
++---------+----------+
+//Obtener clientes que superan el limite por suma de transacciones
+    //RESULTADO
+    SELECT CL.codigo, CL.nombre, CL.dpi, CL.birth, CL.direccion, CL.sexo, D.total 
+    FROM (SELECT C.cliente, SUM(A.monto) AS total FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id GROUP BY C.cliente) AS D
+    JOIN LIMITE B ON D.cliente IS NOT NULL AND B.tipo = "Limite por suma de transaccion"
+    JOIN CLIENTE AS CL ON D.cliente = CL.codigo 
+    WHERE D.total > B.monto;
++---------+---------------------------+-----------+------------+-----------+-----------+----------+
+| codigo  | nombre                    | dpi       | birth      | direccion | sexo      | total    |
++---------+---------------------------+-----------+------------+-----------+-----------+----------+
+| CLI4175 | Cliente a tener solicitud | 123123132 | 2020-11-10 | a4444     | Femenino  | 33900.00 |
+| CLI4860 | CLIENTE PRUEBA 1          | 201830121 | 2020-11-10 | addd      | Masculino | 39900.00 |
++---------+---------------------------+-----------+------------+-----------+-----------+----------+
+
+PARTE 2: Ver esas transacciones
+//Transacciones que superan ese limite (Transacciones del cliente)
+    SELECT A.* FROM TRANSACCION A JOIN CUENTA B ON A.cuenta_id = B.codigo WHERE B.cliente = "CLI4860" ORDER BY A.fecha DESC, A.hora, A.monto DESC;
+  +----------+-----------+------------+----------+--------------------------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo                     | monto   | cajero_id |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO                  | 5000.00 | CAJ4489   |
+| TRA8180  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5311  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA2883  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4448  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4053  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5234  | CUE6083   | 2020-11-10 | 12:00:00 | DEBITO POR TRANSFERENCIA | 2500.00 | 101       |
+| TRA4089  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2400.00 | 101       |
+| TRA3692  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO POR TRANSFERENCIA | 2000.00 | 101       |
+| TRA3496  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA3063  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA4739  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA5088  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA1872  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA7342  | CUE3150   | 2020-11-10 | 12:00:00 | null                     | 2000.00 | CAJ4489   |
+| TRA1401  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA1598  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO                   | 1000.00 | CAJ4489   |
+| TRA8388  | CUE3150   | 2020-11-10 | 12:00:00 | null                     | 1000.00 | CAJ4489   |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+
+////////////////////////////////////////////////////3.Top 10 clientes con más dinero (037)
+//Obtener cuentas
+    SELECT B.codigo, B.credito FROM CUENTA B;
++-----------+----------+
+| codigo    | credito  |
++-----------+----------+
+| 15975428  |  2000.12 |
+| 159754282 |  2000.12 |
+| 21175421  |  2000.12 |
+| 211754221 |  2000.12 |
+| CUE3150   |  7000.00 |
+| CUE5819   | 13500.00 |
+| CUE6083   |   500.00 |
+| CUE7396   |  2000.00 |
++-----------+----------+
+//sumar cuentas por cliente
+    //RESULTADO
+    SELECT A.codigo, A.nombre, A.dpi, A.birth, A.direccion, A.sexo, SUM(B.credito) AS total FROM CUENTA B JOIN CLIENTE A ON B.cliente = A.codigo GROUP BY A.codigo ORDER BY SUM(B.credito) DESC;
++---------+----------+
+| codigo  | total    |
++---------+----------+
+| CLI4175 | 13500.00 |
+| CLI4860 |  7500.00 |
+| CLI1    |  6000.24 |
+| CLI2    |  4000.24 |
++---------+----------+
+//CORROBORAR POR CUENTAS
+mysql> SELECT * FROM CUENTA;
++-----------+---------+------------+----------+
+| codigo    | cliente | creada     | credito  |
++-----------+---------+------------+----------+
+| 15975428  | CLI1    | 2015-05-07 |  2000.12 |
+| 159754282 | CLI2    | 2015-05-07 |  2000.12 |
+| 21175421  | CLI1    | 2015-08-17 |  2000.12 |
+| 211754221 | CLI2    | 2015-08-17 |  2000.12 |
+| CUE3150   | CLI4860 | 2020-11-10 |  7000.00 |
+| CUE5819   | CLI4175 | 2020-11-10 | 13500.00 |
+| CUE6083   | CLI4860 | 2020-11-10 |   500.00 |
+| CUE7396   | CLI1    | 2020-11-10 |  2000.00 |
++-----------+---------+------------+----------+
+////////////////////////////////////////////////////4.Ver clientes que no han realizado transacciones (038) con intervalo tiempo
+//Obtener clientes que han hecho transacciones
+  SELECT C.cliente FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id GROUP BY C.cliente;
++---------+
+| cliente |
++---------+
+| CLI1    |
+| CLI2    |
+| CLI4860 |
+| CLI4175 |
++---------+
+//Obtener clientes que han hecho transacciones con intervalo de tiempo
+  SELECT C.cliente FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id WHERE fecha BETWEEN "2020-11-10" AND "2020-11-13" GROUP BY C.cliente;
++---------+
+| cliente |
++---------+
+| CLI4860 |
+| CLI4175 |
++---------+
+
+//Clientes totales
+mysql> SELECT codigo FROM CLIENTE;
++---------+
+| codigo  |
++---------+
+| CLI1    |
+| CLI1045 |
+| CLI2    |
+| CLI3793 |
+| CLI4175 |
+| CLI4860 |
+| CLI9517 |
++---------+
+//mostrar clientes sin transacciones
+  SELECT AA.codigo FROM CLIENTE AS AA
+    LEFT JOIN (SELECT C.cliente FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id GROUP BY C.cliente) AS BB
+    ON AA.codigo = BB.cliente WHERE BB.cliente IS NULL;
++---------+
+| codigo  |
++---------+
+| CLI1045 |
+| CLI3793 |
+| CLI9517 |
++---------+
+//mostrar clientes sin transacciones en intervalo de tiempo
+    //RESPUESTA
+  SELECT AA.codigo FROM CLIENTE AS AA
+    LEFT JOIN (SELECT C.cliente FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id WHERE fecha BETWEEN "2020-11-10" AND "2020-11-13" GROUP BY C.cliente) AS BB
+    ON AA.codigo = BB.cliente WHERE BB.cliente IS NULL;
++---------+
+| codigo  |
++---------+
+| CLI1    |
+| CLI1045 |
+| CLI2    |
+| CLI3793 |
+| CLI9517 |
+
+////////////////////////////////////////////////////5. Ver cajero que más transacciones ha realizado (039)
+//Ver transacciones agrupados por cajero
+    SELECT cajero_id FROM TRANSACCION GROUP BY cajero_id;
++-----------+
+| cajero_id |
++-----------+
+| 101       |
+| CAJ1      |
+| CAJ4489   |
++-----------+
+//Ver transacciones agrupados por cajero en intervalo
+    SELECT cajero_id FROM TRANSACCION WHERE fecha BETWEEN "2020-11-10" AND "2020-11-13" GROUP BY cajero_id;
++-----------+
+| cajero_id |
++-----------+
+| 101       |
+| CAJ4489   |
++-----------+
+//Ver transacciones agrupados por cajero y cantidad
+    SELECT cajero_id, COUNT(*) AS cantidad FROM TRANSACCION WHERE fecha BETWEEN "2020-11-10" AND "2020-11-13" GROUP BY cajero_id;
++-----------+----------+
+| cajero_id | cantidad |
++-----------+----------+
+| 101       |       28 |
+| CAJ4489   |        4 |
++-----------+----------+
+
+//Removemos el cajero_id = 101 porque es la banca virtual
+    //RESPUESTA
+    SELECT cajero_id, COUNT(*) AS cantidad FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id <> "101") GROUP BY cajero_id ORDER BY cajero_id DESC LIMIT 1;
++-----------+----------+
+| cajero_id | cantidad |
++-----------+----------+
+| CAJ4489   |        4 |
+//Ver transferencias
+    SELECT * FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") ORDER BY fecha DESC, hora DESC, monto DESC;
++----------+-----------+------------+----------+---------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo    | monto   | cajero_id |
++----------+-----------+------------+----------+---------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO | 5000.00 | CAJ4489   |
+| TRA7342  | CUE3150   | 2020-11-10 | 12:00:00 | null    | 2000.00 | CAJ4489   |
+| TRA1598  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO  | 1000.00 | CAJ4489   |
+| TRA8388  | CUE3150   | 2020-11-10 | 12:00:00 | null    | 1000.00 | CAJ4489   |
++----------+-----------+------------+----------+---------+---------+-----------+
+////////////////////////////////////////////////////6. Ver transacciones por cliente (040) en intervalo de tiempo
+// Obtener clientes con filtro de nombre
+    SELECT codigo, nombre, dpi, birth, sexo FROM CLIENTE WHERE nombre LIKE "%%";
+
+//Obtener clientes que han hecho transacciones
+    SELECT A.* FROM TRANSACCION A JOIN CUENTA B ON A.cuenta_id = B.codigo WHERE (B.cliente = "CLI4860") ORDER BY A.fecha DESC, A.hora, A.monto DESC;
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo                     | monto   | cajero_id |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO                  | 5000.00 | CAJ4489   |
+| TRA8180  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5311  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA2883  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4448  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4053  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5234  | CUE6083   | 2020-11-10 | 12:00:00 | DEBITO POR TRANSFERENCIA | 2500.00 | 101       |
+| TRA4089  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2400.00 | 101       |
+| TRA3692  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO POR TRANSFERENCIA | 2000.00 | 101       |
+| TRA3496  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA3063  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA4739  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA5088  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA1872  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA7342  | CUE3150   | 2020-11-10 | 12:00:00 | null                     | 2000.00 | CAJ4489   |
+| TRA1401  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA1598  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO                   | 1000.00 | CAJ4489   |
+| TRA8388  | CUE3150   | 2020-11-10 | 12:00:00 | null                     | 1000.00 | CAJ4489   |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+//Agregar intervalo tiempo
+    //RESPUESTA
+    SELECT A.* FROM TRANSACCION A JOIN CUENTA B ON A.cuenta_id = B.codigo WHERE (B.cliente = "CLI4860") AND (fecha BETWEEN "2020-11-10" AND "2020-11-13") ORDER BY A.fecha DESC, A.hora, A.monto DESC;
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo                     | monto   | cajero_id |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO                  | 5000.00 | CAJ4489   |
+| TRA8180  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5311  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA2883  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4448  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4053  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5234  | CUE6083   | 2020-11-10 | 12:00:00 | DEBITO POR TRANSFERENCIA | 2500.00 | 101       |
+| TRA4089  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2400.00 | 101       |
+| TRA1401  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA7342  | CUE3150   | 2020-11-10 | 12:00:00 | null                     | 2000.00 | CAJ4489   |
+| TRA1872  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA3692  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO POR TRANSFERENCIA | 2000.00 | 101       |
+| TRA5088  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA3063  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA4739  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA3496  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA1598  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO                   | 1000.00 | CAJ4489   |
+| TRA8388  | CUE3150   | 2020-11-10 | 12:00:00 | null                     | 1000.00 | CAJ4489   |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+////////////////////////////////////////////////////REPORTES CAJERO
+////////////////////////////////////////////////////1. Mostrar transacciones por el cajero en un intervalo de tiempo (043) en intervalo de tiempo
+//Ver transferencias
+    SELECT * FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") ORDER BY fecha DESC, hora DESC, monto DESC;
++----------+-----------+------------+----------+---------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo    | monto   | cajero_id |
++----------+-----------+------------+----------+---------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO | 5000.00 | CAJ4489   |
+| TRA7342  | CUE3150   | 2020-11-10 | 12:00:00 | null    | 2000.00 | CAJ4489   |
+| TRA1598  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO  | 1000.00 | CAJ4489   |
+| TRA8388  | CUE3150   | 2020-11-10 | 12:00:00 | null    | 1000.00 | CAJ4489   |
++----------+-----------+------------+----------+---------+---------+-----------+
+//RETIROS
+    SELECT * FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") AND (tipo = "DEBITO") ORDER BY fecha DESC, hora DESC, monto DESC;
++---------+-----------+------------+----------+--------+---------+-----------+
+| codigo  | cuenta_id | fecha      | hora     | tipo   | monto   | cajero_id |
++---------+-----------+------------+----------+--------+---------+-----------+
+| TRA1598 | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO | 1000.00 | CAJ4489   |
++---------+-----------+------------+----------+--------+---------+-----------+
+//DEPOSITOS
+    SELECT * FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") AND (tipo = "CREDITO") ORDER BY fecha DESC, hora DESC, monto DESC;
++----------+-----------+------------+----------+---------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo    | monto   | cajero_id |
++----------+-----------+------------+----------+---------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO | 5000.00 | CAJ4489   |
++----------+-----------+------------+----------+---------+---------+-----------+
+//BALANCE
+    SELECT tipo, SUM(monto) AS balance FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") AND (tipo = "DEBITO" OR tipo = "CREDITO")  GROUP BY tipo;
++---------+---------+
+| tipo    | balance |
++---------+---------+
+| CREDITO | 5000.00 |
+| DEBITO  | 1000.00 |
++---------+---------+
+
+////////////////////////////////////////////////////2. Mostrar transacciones del dia (042)
+//Ver transferencias
+    SELECT * FROM TRANSACCION WHERE (fecha = "2020-11-10") AND (cajero_id = "CAJ4489") ORDER BY fecha DESC, hora DESC, monto DESC;
++----------+-----------+------------+----------+---------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo    | monto   | cajero_id |
++----------+-----------+------------+----------+---------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO | 5000.00 | CAJ4489   |
+| TRA7342  | CUE3150   | 2020-11-10 | 12:00:00 | null    | 2000.00 | CAJ4489   |
+| TRA1598  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO  | 1000.00 | CAJ4489   |
+| TRA8388  | CUE3150   | 2020-11-10 | 12:00:00 | null    | 1000.00 | CAJ4489   |
++----------+-----------+------------+----------+---------+---------+-----------+
+//Ver transferencias DEBITO Y CREDITO
+    SELECT * FROM TRANSACCION WHERE (fecha = "2020-11-10") AND (cajero_id = "CAJ4489") AND (tipo = "DEBITO" OR tipo = "CREDITO") ORDER BY fecha DESC, hora DESC, monto DESC;
++----------+-----------+------------+----------+---------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo    | monto   | cajero_id |
++----------+-----------+------------+----------+---------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO | 5000.00 | CAJ4489   |
+| TRA1598  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO  | 1000.00 | CAJ4489   |
++----------+-----------+------------+----------+---------+---------+-----------+
+//RETIROS
+    SELECT * FROM TRANSACCION WHERE (fecha = "2020-11-10") AND (cajero_id = "CAJ4489") AND (tipo = "DEBITO") ORDER BY fecha DESC, hora DESC, monto DESC;
++---------+-----------+------------+----------+--------+---------+-----------+
+| codigo  | cuenta_id | fecha      | hora     | tipo   | monto   | cajero_id |
++---------+-----------+------------+----------+--------+---------+-----------+
+| TRA1598 | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO | 1000.00 | CAJ4489   |
++---------+-----------+------------+----------+--------+---------+-----------+
+//DEPOSITOS
+    SELECT * FROM TRANSACCION WHERE (fecha = "2020-11-10") AND (cajero_id = "CAJ4489") AND (tipo = "CREDITO") ORDER BY fecha DESC, hora DESC, monto DESC;
++----------+-----------+------------+----------+---------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo    | monto   | cajero_id |
++----------+-----------+------------+----------+---------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO | 5000.00 | CAJ4489   |
++----------+-----------+------------+----------+---------+---------+-----------+
+//BALANCE
+    SELECT tipo, SUM(monto) AS balance FROM TRANSACCION WHERE (fecha = "2020-11-10") AND (cajero_id = "CAJ4489") AND (tipo = "DEBITO" OR tipo = "CREDITO") GROUP BY tipo;
++---------+---------+
+| tipo    | balance |
++---------+---------+
+| CREDITO | 5000.00 |
+| DEBITO  | 1000.00 |
++---------+---------+
+////////////////////////////////////////////////////3. Ver ultimas 15 transacciones mas grandes por cuenta (048)
+    SELECT * FROM TRANSACCION WHERE (cuenta_id = "CUE3150") AND (fecha BETWEEN DATE_SUB("2020-11-10", INTERVAL 1 YEAR) AND "2020-11-10") ORDER BY monto DESC LIMIT 15;
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo                     | monto   | cajero_id |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO                  | 5000.00 | CAJ4489   |
+| TRA2883  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4053  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4448  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5311  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA8180  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4089  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2400.00 | 101       |
+| TRA1401  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA1872  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA3063  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA3496  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA3692  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO POR TRANSFERENCIA | 2000.00 | 101       |
+| TRA4739  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA5088  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 2000.00 | 101       |
+| TRA7342  | CUE3150   | 2020-11-10 | 12:00:00 | null                     | 2000.00 | CAJ4489   |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+////////////////////////////////////////////////////4. Ver cuenta con más dinero (050)
+    SELECT * FROM CUENTA WHERE cliente = "CLI4860" ORDER BY credito DESC LIMIT 1;
++---------+---------+------------+---------+
+| codigo  | cliente | creada     | credito |
++---------+---------+------------+---------+
+| CUE3150 | CLI4860 | 2020-11-10 | 7000.00 |
++---------+---------+------------+---------+

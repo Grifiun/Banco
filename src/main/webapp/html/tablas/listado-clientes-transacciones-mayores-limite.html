@@ -1,0 +1,47 @@
+<%
+    ArrayList<String> listaDatosClientesR2 = new ArrayList();
+    List<ArrayList<String>> listaClientesR2 = cons.obtenerRegistros(query, 
+           new ArrayList<String>(listaDatosClientesR2));
+    
+    listaDatosClientesR2.add("Limite por transaccion");
+    List<ArrayList<String>> listaLimite = cons.obtenerRegistros("SELECT monto FROM LIMITE WHERE tipo = ?", 
+           new ArrayList<String>(listaDatosClientesR2));
+%>
+<h1>Listado clientes con transacciones mayores a un limite: <%=listaLimite.get(0).get(0)%></h1>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+        <%
+                for(int i = 0; i < titulo.size(); i++){
+        %>            
+        <th scope="row"><%=titulo.get(i)%></th>
+        <%
+            }
+        %>
+    </tr>
+  </thead>
+  <tbody>
+      <%
+        for(int i = 0; i < listaClientesR2.size(); i++){
+      %>
+        <tr>
+            <th scope="row"><%=i + 1%></th>
+        <%
+            for(int j = 0; j < listaClientesR2.get(0).size(); j++){
+        %>
+                <td><%=listaClientesR2.get(i).get(j)%></td>
+            <%
+            }
+            
+            %>
+            <td><a href="mostrar-datos-usuario.jsp?tipoQuery=listado-clientes&verUsuario=ver-cliente&codigoUsuario=<%=listaClientesR2.get(i).get(0)%>" class="btn btn-success">1</a>
+            <a href="gerente-listar-datos.jsp?tipoListado=listado-cuentas&cliente-id=<%=listaClientesR2.get(i).get(0)%>" class="btn btn-success">2</a>
+            <a href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-mayores-limite-por-cliente&codigoUsuario=<%=listaClientesR2.get(i).get(0)%>" class="btn btn-success">3</a>
+            <a href="gerente-ingresar-entidad.jsp?tipoEntidad=cuenta&cliente=<%=listaClientesR2.get(i).get(0)%>" class="btn btn-success">4</a></td>
+        </tr>
+      <%
+        }      
+      %>
+  </tbody>
+</table>

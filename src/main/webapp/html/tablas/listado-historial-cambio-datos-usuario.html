@@ -1,0 +1,52 @@
+<%
+    restriccionLista = new ArrayList();
+    String codigoAuxCajero = (String)request.getParameter("codigoUsuario");
+    restriccionLista.add(codigoAuxCajero);
+    lista = cons.obtenerRegistros(query, 
+           new ArrayList<String>(restriccionLista));
+%>
+<h1>Historial de cambios de dato del usuario</h1>
+<%
+    if(lista != null && lista.size() > 0){
+    %>
+    <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+        <%
+                for(int i = 0; i < titulo.size(); i++){
+        %>            
+        <th scope="row"><%=titulo.get(i)%></th>
+        <%
+            }
+        %>
+    </tr>
+  </thead>
+  <tbody>
+      <%
+        for(int i = 0; i < lista.size(); i++){
+      %>
+        <tr>
+            <th scope="row"><%=i + 1%></th>
+        <%
+            for(int j = 0; j < lista.get(0).size(); j++){
+        %>
+                <td><%=lista.get(i).get(j)%></td>
+            <%
+            }
+            
+            %>
+        </tr>
+      <%
+        }      
+      %>
+  </tbody>
+</table>
+    <%
+    
+    }else{
+%>
+<h5>Este usuario no posee un historial de cambio porque no ha cambiado ningun dato</h5>
+<% 
+}
+%>

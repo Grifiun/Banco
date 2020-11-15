@@ -32,7 +32,8 @@
             
             %>
             <td><a href="mostrar-datos-usuario.jsp?tipoQuery=listado-cajeros&verUsuario=ver-cajero&codigoUsuario=<%=listaCajero.get(i).get(0)%>" class="btn btn-success">1</a>
-            <a href="#" class="btn btn-success">2</a></td>
+            <a href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-por-cajero&codigoUsuario=<%=listaCajero.get(i).get(0)%>" class="btn btn-success">2</a>
+            <a href="gerente-listar-datos.jsp?tipoListado=listado-historial-cambio-datos-usuario&codigoUsuario=<%=listaCajero.get(i).get(0)%>" class="btn btn-success">3</a></td>
         </tr>
       <%
         }      

@@ -5,8 +5,19 @@
     
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
+    
+    List<ArrayList<String>> listaCreditoCuentaId;
+    listaCreditoCuentaId = cons.obtenerRegistros("SELECT credito FROM CUENTA WHERE codigo = ?", 
+           new ArrayList<String>(restriccionLista));
+    String creditoCuentaId;
+    try{
+        creditoCuentaId = listaCreditoCuentaId.get(0).get(0);
+    }catch(Exception ex){
+        creditoCuentaId = "0";
+    }
 %>
-<h1>Listado transacciones de la cuenta: <%=cuentaAux%></h1>
+<h1>Estado de la cuenta: <%=cuentaAux%></h1>
+<h1>Balance <%=creditoCuentaId%></h1>
 <%   
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
@@ -26,6 +37,8 @@
           </thead>
           <tbody>
               <%
+                String valorFinal;//Valor final de los saldos finales ed una transferencia
+                String valorInicial = "";//valor que contendra los montos iniciales en una transferencia
                 for(int i = 0; i < lista.size(); i++){
               %>
                 <tr>
@@ -35,9 +48,27 @@
                 %>
                         <td><%=lista.get(i).get(j)%></td>
                     <%
-                    }
-
+                    } //En la posicion lista.get(i).get(4) estan los montos manejados por esa transaccion
+                        
+                        if(i == 0){//si es la primera posicion el valor sera el saldo actual de la cuenta
+                            valorFinal = creditoCuentaId;
+                        }else{
+                            valorFinal = valorInicial; //Si no es la primra posicion sera el saldo inicial anterior
+                        }
+                                               
+                        //En la posicion lista.get(i).get(3) estan los tipos de esa transaccion
+                        //Si es un retiro el valor inicial el dinero actual + monto
+                        if(lista.get(i).get(3).equalsIgnoreCase("debito") || lista.get(i).get(3).equalsIgnoreCase("debito por transferencia")){
+                            String montoAux = lista.get(i).get(4);
+                            valorInicial = String.valueOf(Double.parseDouble(valorFinal) + Double.parseDouble(montoAux));
+                        }else{//es un deposito
+                            String montoAux = lista.get(i).get(4);
+                            valorInicial = String.valueOf(Double.parseDouble(valorFinal) - Double.parseDouble(montoAux));
+                        }
+                        
                     %>
+                    <td><%=valorInicial%></td>
+                    <td><%=valorFinal%></td>
                 </tr>
               <%
                 }      

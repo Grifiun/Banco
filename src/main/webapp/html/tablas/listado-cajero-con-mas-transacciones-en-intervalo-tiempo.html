@@ -1,0 +1,46 @@
+<%
+    String tiempo1R7 = (String) request.getParameter("tiempo1");
+    String tiempo2R7 = (String) request.getParameter("tiempo2");
+    restriccionLista = new ArrayList();
+    restriccionLista.add(tiempo1R7);
+    restriccionLista.add(tiempo2R7);
+    lista = cons.obtenerRegistros(query, 
+           new ArrayList<String>(restriccionLista));
+%>
+<h1>Cajero con mas transferencias hechas en el intervalo de tiempo</h1>
+<h3>Fecha inicial : <%=tiempo1R7%> y Fecha final : <%=tiempo2R7%></h3>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+        <%
+                for(int i = 0; i < titulo.size(); i++){
+        %>            
+        <th scope="row"><%=titulo.get(i)%></th>
+        <%
+            }
+        %>
+    </tr>
+  </thead>
+  <tbody>
+      <%
+        for(int i = 0; i < lista.size(); i++){
+      %>
+        <tr>
+            <th scope="row"><%=i + 1%></th>
+        <%
+            for(int j = 0; j < lista.get(0).size(); j++){
+        %>
+                <td><%=lista.get(i).get(j)%></td>
+            <%
+            }
+            
+            %>
+            <td><a href="mostrar-datos-usuario.jsp?tipoQuery=listado-cajeros&verUsuario=ver-cajero&codigoUsuario=<%=lista.get(i).get(0)%>" class="btn btn-success">1</a>
+                <a href="gerente-listar-datos.jsp?tipoListado=listado-cajero-con-mas-transacciones-en-intervalo-tiempo-transacciones&codigoUsuario=<%=lista.get(i).get(0)%>&tiempo1=<%=tiempo1R7%>&tiempo2=<%=tiempo2R7%>" class="btn btn-success">2</a></td>
+        </tr>
+      <%
+        }      
+      %>
+  </tbody>
+</table>

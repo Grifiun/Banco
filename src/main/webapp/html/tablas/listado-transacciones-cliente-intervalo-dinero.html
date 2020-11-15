@@ -1,0 +1,61 @@
+<%
+    String dinero1 = (String) request.getParameter("dinero1");
+    String dinero2 = (String) request.getParameter("dinero2");
+    restriccionLista = new ArrayList();
+    
+    String clienteAuxiliar = (String)request.getParameter("cliente-id");
+    restriccionLista.add(clienteAuxiliar);
+    restriccionLista.add(dinero1);
+    restriccionLista.add(dinero2);
+    
+    lista = cons.obtenerRegistros(query, 
+           new ArrayList<String>(restriccionLista)); 
+    
+%>
+<h1>Transacciones del cliente entre el intervalo</h1>
+<h3>Intervalo inicial: Q<%=dinero1%> e Intervalo final: Q<%=dinero2%></h3>
+<h3>Cliente con codigo: <%=clienteAuxiliar%></h3>
+<%   
+    if(lista != null && lista.size() > 0){
+        //listamos las cuentas porque existen
+       %>  
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+                <%
+                        for(int i = 0; i < titulo.size(); i++){
+                %>            
+                <th scope="row"><%=titulo.get(i)%></th>
+                <%
+                    }
+                %>
+            </tr>
+          </thead>
+          <tbody>
+              <%
+                for(int i = 0; i < lista.size(); i++){
+              %>
+                <tr>
+                    <th scope="row"><%=i + 1%></th>
+                <%
+                    for(int j = 0; j < lista.get(0).size(); j++){
+                %>
+                        <td><%=lista.get(i).get(j)%></td>
+                    <%
+                    }                         
+                    %>
+                </tr>
+              <%
+                }      
+              %>
+          </tbody>
+        </table>
+       <%
+    
+    }else{
+%>
+    <h5>Este usuario no posee transacciones</h5>
+<% 
+    }
+%>
