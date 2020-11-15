@@ -27,6 +27,8 @@
         
         ArrayList<String> restriccionLista;
         List<ArrayList<String>> lista;
+           
+
         %>   
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -74,7 +76,46 @@
                     break;
                 case "listado-cuentas-propias":%><%@include file="../html/ingresos-formularios/form-ingresar-transaccion-cuentas.html" %><%
                     break;
-                
+                    //REPORTES
+                case "listado-clientes-transacciones-mayores-limite":%><%@include file="../html/tablas/listado-clientes-transacciones-mayores-limite.html" %><%
+                    break;
+                case "listado-transacciones-mayores-limite-por-cliente":%><%@include file="../html/tablas/listado-transacciones-mayores-limite-por-cliente.html" %><%
+                    break;
+                case "listado-clientes-transacciones-mayores-suma-limite":%><%@include file="../html/tablas/listado-clientes-transacciones-mayores-suma-limite.html" %><%
+                    break;
+                case "listado-transacciones-por-cliente":%><%@include file="../html/tablas/listado-transacciones-por-cliente.html" %><%
+                    break;
+                case "listado-10-clientes-con-mas-dinero":%><%@include file="../html/tablas/listado-10-clientes-con-mas-dinero.html" %><%
+                    break;
+                case "listado-clientes-sin-transacciones-intervalo-tiempo":%><%@include file="../html/tablas/listado-clientes-sin-transacciones-intervalo-tiempo.html" %><%
+                    break;
+                case "listado-cajero-con-mas-transacciones-en-intervalo-tiempo":%><%@include file="../html/tablas/listado-cajero-con-mas-transacciones-en-intervalo-tiempo.html" %><%
+                    break;
+                case "listado-cajero-con-mas-transacciones-en-intervalo-tiempo-transacciones":%><%@include file="../html/tablas/listado-cajero-con-mas-transacciones-en-intervalo-tiempo-transacciones.html" %><%
+                    break;
+                case "listado-clientes-por-nombre":%><%@include file="../html/tablas/listado-clientes-por-nombre.html" %><%
+                    break;
+                case "listado-transacciones-cliente-intervalo-dinero":%><%@include file="../html/tablas/listado-transacciones-cliente-intervalo-dinero.html" %><%
+                    break;
+                case "listado-transacciones-por-cajero":%><%@include file="../html/tablas/listado-transacciones-por-cajero.html" %><%
+                    break;
+                case "listado-historial-cambio-datos-usuario":%><%@include file="../html/tablas/listado-historial-cambio-datos-usuario.html" %><%
+                    break;
+                case "listado-transacciones-dia-cajero":%><%@include file="../html/tablas/listado-transacciones-dia-cajero.html" %><%
+                    break;
+                case "listado-cantidad-transacciones-cajero-intervalo-tiempo":%><%@include file="../html/tablas/listado-cantidad-transacciones-cajero-intervalo-tiempo.html" %><%
+                    break;
+                case "listado-cuenta-con-mas-dinero":%><%@include file="../html/tablas/listado-cuenta-con-mas-dinero.html" %><%
+                    break;
+                case "listado-cuentas-ultimas-15-transacciones":%><%@include file="../html/tablas/listado-cuentas-ultimas-15-transacciones.html" %><%
+                    break;
+                case "listado-ver-ultimas-15-transacciones-por-cuenta":%><%@include file="../html/tablas/listado-ver-ultimas-15-transacciones-por-cuenta.html" %><%
+                    break;
+                case "listado-cuentas-intervalo-tiempo":%><%@include file="../html/tablas/listado-cuentas-intervalo-tiempo.html" %><%
+                    break;
+                case "listado-transaciones-por-cuenta-intervalo-tiempo":%><%@include file="../html/tablas/listado-transaciones-por-cuenta-intervalo-tiempo.html" %><%
+                    break;
+
             } 
         %>      
         <%@include file="../html/ingresos/parte-inferior.html" %>

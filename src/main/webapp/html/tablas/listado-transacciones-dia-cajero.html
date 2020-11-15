@@ -1,0 +1,113 @@
+<%
+    restriccionLista = new ArrayList();
+    
+    String fechaauxi = request.getParameter("dia");
+        
+    if(fechaauxi == null || fechaauxi.isEmpty())
+        fechaauxi = (String) session.getAttribute("fecha_sistema");
+        
+    String ltdc1 = (String)request.getParameter("codigoUsuario");
+    restriccionLista.add(fechaauxi);
+    restriccionLista.add(ltdc1);
+    System.out.println(restriccionLista);
+    
+    lista = cons.obtenerRegistros(query, 
+           new ArrayList<String>(restriccionLista));
+    String query21 = queryObjeto.getQuery("listado-transacciones-dia-cajero-retiros");
+    List<ArrayList<String>> lista2 = cons.obtenerRegistros(query21, 
+           new ArrayList<String>(restriccionLista));
+    String query31 = queryObjeto.getQuery("listado-transacciones-dia-cajero-balance");
+    List<ArrayList<String>> lista3 = cons.obtenerRegistros(query31, 
+           new ArrayList<String>(restriccionLista));
+%>
+<h1>Transacciones del cajero en el turno</h1>
+<%   
+    if(lista != null && lista.size() > 0){
+        //listamos las cuentas porque existen
+       %>  
+       <h3>Total depositos: <%=lista3.get(0).get(1)%></h3>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+                <%
+                        for(int i = 0; i < titulo.size(); i++){
+                %>            
+                <th scope="row"><%=titulo.get(i)%></th>
+                <%
+                    }
+                %>
+            </tr>
+          </thead>
+          <tbody>
+              <%
+                for(int i = 0; i < lista.size(); i++){
+              %>
+                <tr>
+                    <th scope="row"><%=i + 1%></th>
+                <%
+                    for(int j = 0; j < lista.get(0).size(); j++){
+                %>
+                        <td><%=lista.get(i).get(j)%></td>
+                    <%
+                    }                         
+                    %>
+                </tr>
+              <%
+                }      
+              %>
+          </tbody>
+        </table>
+       <%
+    
+    }else{
+%>
+    <h5>Este usuario no posee transacciones de depositos (credito)</h5>
+<% 
+    }
+%>
+<%   
+    if(lista2 != null && lista2.size() > 0){
+        //listamos las cuentas porque existen
+       %>  
+       <h3>Total retiros <%=lista3.get(1).get(1)%></h3>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+                <%
+                        for(int i = 0; i < titulo.size(); i++){
+                %>            
+                <th scope="row"><%=titulo.get(i)%></th>
+                <%
+                    }
+                %>
+            </tr>
+          </thead>
+          <tbody>
+              <%
+                for(int i = 0; i < lista2.size(); i++){
+              %>
+                <tr>
+                    <th scope="row"><%=i + 1%></th>
+                <%
+                    for(int j = 0; j < lista2.get(0).size(); j++){
+                %>
+                        <td><%=lista2.get(i).get(j)%></td>
+                    <%
+                    }                         
+                    %>
+                </tr>
+              <%
+                }      
+              %>
+          </tbody>
+        </table>
+       <%
+    
+    }else{
+%>
+    <h5>Este usuario no posee transacciones de retiros (debito)</h5>
+<% 
+    }
+%>

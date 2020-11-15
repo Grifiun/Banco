@@ -1,5 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  
+<%String codigo = (String) session.getAttribute("codigo");
+%>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">  
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
@@ -32,14 +33,20 @@
           <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-cajeros">Ver cajeros</a>
           <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-gerentes">Ver gerentes</a>
           <a class="dropdown-item" href="mostrar-datos-usuario.jsp?tipoQuery=listado-gerentes&verUsuario=ver-gerente">Ver perfil gerente</a>
-      </li>
+          <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-historial-cambio-datos-usuario&codigoUsuario=<%=codigo%>">Ver historial de cambio de gerente</a>
+        </div>
+      </li>      
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="reportes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Reportes
-                   
+          REPORTES                   
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-         
+         <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-clientes-transacciones-mayores-limite">Clientes con transacciones monetarias mayores a un limite establecido</a>
+         <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-clientes-transacciones-mayores-suma-limite">Clientes con transacciones monetarias sumadas mayores a un limite establecido</a>
+         <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-10-clientes-con-mas-dinero">Los 10 clientes con mas dinero en sus cuentas</a>
+         <a class="dropdown-item" href="ingresar-intervalo-dato.jsp?intervalo=tiempo&direccion=listado-clientes-sin-transacciones-intervalo-tiempo">Clientes que no han realizado transacciones dentro de un intervalo de tiempo</a>
+         <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-clientes-por-nombre&filtro-nombre=sin-filtro">Historial de transacciones por cliente</a>
+         <a class="dropdown-item" href="ingresar-intervalo-dato.jsp?intervalo=tiempo&direccion=listado-cajero-con-mas-transacciones-en-intervalo-tiempo">Cajero que mas transacciones ha realizado en un intervalo de tiempo</a>
         </div>
       </li>
       <li class="nav-item dropdown">

@@ -1,0 +1,43 @@
+<%
+    restriccionLista = new ArrayList();
+    lista = cons.obtenerRegistros(query, 
+           new ArrayList<String>(restriccionLista));
+%>
+<h1>Listado top 10 clientes con mas dinero entre sus cuentas</h1>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+        <%
+                for(int i = 0; i < titulo.size(); i++){
+        %>            
+        <th scope="row"><%=titulo.get(i)%></th>
+        <%
+            }
+        %>
+    </tr>
+  </thead>
+  <tbody>
+      <%
+        for(int i = 0; i < lista.size(); i++){
+      %>
+        <tr>
+            <th scope="row"><%=i + 1%></th>
+        <%
+            for(int j = 0; j < lista.get(0).size(); j++){
+        %>
+                <td><%=lista.get(i).get(j)%></td>
+            <%
+            }
+            
+            %>
+            <td><a href="mostrar-datos-usuario.jsp?tipoQuery=listado-clientes&verUsuario=ver-cliente&codigoUsuario=<%=lista.get(i).get(0)%>" class="btn btn-success">1</a>
+            <a href="gerente-listar-datos.jsp?tipoListado=listado-cuentas&cliente-id=<%=lista.get(i).get(0)%>" class="btn btn-success">2</a>
+            <a href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-por-cliente&codigoUsuario=<%=lista.get(i).get(0)%>" class="btn btn-success">3</a>
+            <a href="gerente-ingresar-entidad.jsp?tipoEntidad=cuenta&cliente=<%=lista.get(i).get(0)%>" class="btn btn-success">4</a></td>
+        </tr>
+      <%
+        }      
+      %>
+  </tbody>
+</table>

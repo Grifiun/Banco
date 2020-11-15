@@ -1,23 +1,30 @@
 <%
+    String tiempoAxRr1 = (String) request.getParameter("tiempo1");
+    String tiempoAxRr2 = (String) request.getParameter("tiempo2");
+    String cuentaAuxiliarRr = (String)request.getParameter("cuenta-id");
     restriccionLista = new ArrayList();
-    String cuentaAux = request.getParameter("cuenta-id");
-    restriccionLista.add(cuentaAux);
+    restriccionLista.add(cuentaAuxiliarRr);
+    restriccionLista.add(tiempoAxRr1);
+    restriccionLista.add(tiempoAxRr2);
     
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
-    
-    List<ArrayList<String>> listaCreditoCuentaId;
-    listaCreditoCuentaId = cons.obtenerRegistros("SELECT credito FROM CUENTA WHERE codigo = ?", 
+               
+    restriccionLista.clear();
+    restriccionLista.add(cuentaAuxiliarRr);
+    List<ArrayList<String>> listaCreditoCuentaId1;
+    listaCreditoCuentaId1 = cons.obtenerRegistros("SELECT credito FROM CUENTA WHERE codigo = ?", 
            new ArrayList<String>(restriccionLista));
-    String creditoCuentaId;
+    String creditoCuentaId1;
     try{
-        creditoCuentaId = listaCreditoCuentaId.get(0).get(0);
+        creditoCuentaId1 = listaCreditoCuentaId1.get(0).get(0);
     }catch(Exception ex){
-        creditoCuentaId = "0";
+        creditoCuentaId1 = "0";
     }
 %>
-<h1>Estado de la cuenta: <%=cuentaAux%></h1>
-<h1>Balance <%=creditoCuentaId%></h1>
+<h1>Transacciones en el intervalo de tiempo</h1>
+<h3>Fecha inicial: <%=tiempoAxRr1%> y fecha final: <%=tiempoAxRr2%></h3>
+<h3>Cuenta: <%=cuentaAuxiliarRr%></h3>
 <%   
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
@@ -37,8 +44,8 @@
           </thead>
           <tbody>
               <%
-                String valorFinal;//Valor final de los saldos finales ed una transferencia
-                String valorInicial = "";//valor que contendra los montos iniciales en una transferencia
+                String valorFinal1;//Valor final de los saldos finales ed una transferencia
+                String valorInicial1 = "";//valor que contendra los montos iniciales en una transferencia
                 for(int i = 0; i < lista.size(); i++){
               %>
                 <tr>
@@ -51,24 +58,25 @@
                     } //En la posicion lista.get(i).get(4) estan los montos manejados por esa transaccion
                         
                         if(i == 0){//si es la primera posicion el valor sera el saldo actual de la cuenta
-                            valorFinal = creditoCuentaId;
+                            valorFinal1 = creditoCuentaId1;
                         }else{
-                            valorFinal = valorInicial; //Si no es la primra posicion sera el saldo inicial anterior
+                            valorFinal1 = valorInicial1; //Si no es la primra posicion sera el saldo inicial anterior
                         }
                                                
                         //En la posicion lista.get(i).get(3) estan los tipos de esa transaccion
                         //Si es un retiro el valor inicial el dinero actual + monto
                         if(lista.get(i).get(3).equalsIgnoreCase("debito") || lista.get(i).get(3).equalsIgnoreCase("debito por transferencia")){
                             String montoAux = lista.get(i).get(4);
-                            valorInicial = String.valueOf(Double.parseDouble(valorFinal) + Double.parseDouble(montoAux));
+                            valorInicial1 = String.valueOf(Double.parseDouble(valorFinal1) + Double.parseDouble(montoAux));
                         }else{//es un deposito
                             String montoAux = lista.get(i).get(4);
-                            valorInicial = String.valueOf(Double.parseDouble(valorFinal) - Double.parseDouble(montoAux));
+                            valorInicial1 = String.valueOf(Double.parseDouble(valorFinal1) - Double.parseDouble(montoAux));
                         }
                         
                     %>
-                    <td><%=valorInicial%></td>
-                    <td><%=valorFinal%></td>
+                    <td><%=valorInicial1%></td>
+                    <td><%=valorFinal1%></td>
+                    
                 </tr>
               <%
                 }      

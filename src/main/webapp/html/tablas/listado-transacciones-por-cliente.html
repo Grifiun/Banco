@@ -1,0 +1,53 @@
+<%
+    restriccionLista = new ArrayList();
+    String clienteAuxR32 = (String)request.getParameter("codigoUsuario");
+    restriccionLista.add(clienteAuxR32);
+    
+    lista = cons.obtenerRegistros(query, 
+           new ArrayList<String>(restriccionLista)); 
+%>
+<h1>Transacciones del cliente</h1>
+<%   
+    if(lista != null && lista.size() > 0){
+        //listamos las cuentas porque existen
+       %>  
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+                <%
+                        for(int i = 0; i < titulo.size(); i++){
+                %>            
+                <th scope="row"><%=titulo.get(i)%></th>
+                <%
+                    }
+                %>
+            </tr>
+          </thead>
+          <tbody>
+              <%
+                for(int i = 0; i < lista.size(); i++){
+              %>
+                <tr>
+                    <th scope="row"><%=i + 1%></th>
+                <%
+                    for(int j = 0; j < lista.get(0).size(); j++){
+                %>
+                        <td><%=lista.get(i).get(j)%></td>
+                    <%
+                    }                         
+                    %>
+                </tr>
+              <%
+                }      
+              %>
+          </tbody>
+        </table>
+       <%
+    
+    }else{
+%>
+    <h5>Este usuario no posee transacciones</h5>
+<% 
+    }
+%>

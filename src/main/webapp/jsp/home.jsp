@@ -15,7 +15,7 @@
         %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../html/css-bootstrap.html"%>
-        <title>Admin</title>
+        <title>Home</title>
         <%@include file="../html/css-bootstrap.html"%>
         <link href="../css/style-ingresos.css" rel="stylesheet" type="text/css"/>
     </head>

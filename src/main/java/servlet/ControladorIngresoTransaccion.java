@@ -60,7 +60,7 @@ public class ControladorIngresoTransaccion extends HttpServlet {
             }else{
                 saldo = Double.parseDouble(saldo_origen) + Double.parseDouble(monto);
             }
-                
+                        
         //instqanciamos el registrador
         
         //Seteamos variables que pide la actualizacion

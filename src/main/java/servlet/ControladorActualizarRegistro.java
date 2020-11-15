@@ -49,6 +49,9 @@ public class ControladorActualizarRegistro extends HttpServlet {
         String valorAtributo = gapr.getAttributOrParameter(atributo);
         //nuevo valor
         ArrayList<String> identificador = new ArrayList<String>();
+        //Identificador restriccion
+        String restriccion = gapr.getAttributOrParameter("restriccion");  
+        String datoRestriccion = gapr.getAttributOrParameter(restriccion);
         //Agregamos a los identificadores
         identificador.add(atributo);
         ArrayList<String> dato = new ArrayList<String>();
@@ -65,8 +68,7 @@ public class ControladorActualizarRegistro extends HttpServlet {
             else{//si es un dato ordinario (a recibir del request)
                  dato.add(gapr.getAttributOrParameter(identificador.get(i)));
             }
-        }     
-        String restriccion = gapr.getAttributOrParameter("restriccion");        
+        }   
         dato.add(gapr.getAttributOrParameter(restriccion));//agregamos el codigo al final para agregar el valor de la restriccion
         //actualizamos
         Actualizar act = new Actualizar(tabla, //tabla
@@ -84,7 +86,7 @@ public class ControladorActualizarRegistro extends HttpServlet {
                 request.getSession().setAttribute("fechaSistema","activado");//activamos la fecha automatica para el historial
                 //Agregamos los attributos necesarios
                 request.setAttribute("nombre_atributo", atributo);//agregamos el nombre del atributo
-                request.setAttribute("usuario_id", restriccion);//agregamos el codigo del usuario         tipoEntidad
+                request.setAttribute("usuario_id", datoRestriccion);//agregamos el codigo del usuario         tipoEntidad
                 request.setAttribute("atributo_nuevo_valor", valorAtributo);//agregamos el codigo del usuario
 
                 request.getSession().setAttribute("tipoEntidad", "historial");
