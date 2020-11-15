@@ -1,3 +1,5 @@
+<%String codigoClienteAux = (String) session.getAttribute("codigo");
+%>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -38,6 +40,16 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-cuentas">Ver listado de cuentas</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="reportes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          REPORTES                   
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-cuentas-ultimas-15-transacciones&cliente-id=<%=codigoClienteAux%>">Ultimas 15 transacciones mas grandes realizadas en el ultimo anio, por cuenta.</a>
+            <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-cuentas-intervalo-tiempo&codigoUsuario=<%=codigoClienteAux%>">Transacciones realizadas dentro de un intervalo de tiempo por cuenta</a>
+         <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-cuenta-con-mas-dinero&codigoUsuario=<%=codigoClienteAux%>">La cuenta con mas dinero y sus transacciones</a>
         </div>
       </li>
       <li class="nav-item dropdown">

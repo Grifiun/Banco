@@ -1,0 +1,57 @@
+<%
+    String tiempoAx1 = (String) request.getParameter("tiempo1");
+    String tiempoAx2 = (String) request.getParameter("tiempo2");
+    String ltdc2 = (String)request.getParameter("codigoUsuario");
+    restriccionLista = new ArrayList();
+    restriccionLista.add(tiempoAx1);
+    restriccionLista.add(tiempoAx2);
+    restriccionLista.add(ltdc2);
+    lista = cons.obtenerRegistros(query, 
+           new ArrayList<String>(restriccionLista));
+%>
+<h1>Transacciones del cajero en el turno</h1>
+<%   
+    if(lista != null && lista.size() > 0){
+        //listamos las cuentas porque existen
+       %>  
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+                <%
+                        for(int i = 0; i < titulo.size(); i++){
+                %>            
+                <th scope="row"><%=titulo.get(i)%></th>
+                <%
+                    }
+                %>
+            </tr>
+          </thead>
+          <tbody>
+              <%
+                for(int i = 0; i < lista.size(); i++){
+              %>
+                <tr>
+                    <th scope="row"><%=i + 1%></th>
+                <%
+                    for(int j = 0; j < lista.get(0).size(); j++){
+                %>
+                        <td><%=lista.get(i).get(j)%></td>
+                    <%
+                    }                         
+                    %>
+                    <td><a href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-dia-cajero&codigoUsuario=<%=ltdc2%>&dia=<%=lista.get(i).get(0)%>" class="btn btn-success">Ver</a></td>
+                </tr>
+              <%
+                }      
+              %>
+          </tbody>
+        </table>
+       <%
+    
+    }else{
+%>
+    <h5>Este usuario no posee transacciones</h5>
+<% 
+    }
+%>

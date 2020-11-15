@@ -25,7 +25,15 @@
                 case "listado-transacciones-cliente-intervalo-dinero":
                     String clienteAux = request.getParameter("cliente-id");
                     direccion = "gerente-listar-datos.jsp?tipoListado=listado-transacciones-cliente-intervalo-dinero&cliente-id="+clienteAux;
-                    break;               
+                    break; 
+                case "listado-cantidad-transacciones-cajero-intervalo-tiempo":
+                    String codigoUsuario11 = request.getParameter("codigoUsuario");
+                    direccion = "gerente-listar-datos.jsp?tipoListado=listado-cantidad-transacciones-cajero-intervalo-tiempo&codigoUsuario="+codigoUsuario11;
+                    break;  
+                  case "listado-transaciones-por-cuenta-intervalo-tiempo":
+                    String cuentaAuxiliar = request.getParameter("cuenta-id");
+                    direccion = "gerente-listar-datos.jsp?tipoListado=listado-transaciones-por-cuenta-intervalo-tiempo&cuenta-id="+cuentaAuxiliar;
+                    break;
             }
         %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

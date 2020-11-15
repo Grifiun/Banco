@@ -105,7 +105,36 @@ public class QuerysTitulosTablas {
             case "listado-historial-cambio-datos-usuario":
                 queryAux = "SELECT * FROM HISTORIAL WHERE usuario_id = ?;";
                 break;
-               
+                //REPORTES CAJERO
+            case "listado-transacciones-dia-cajero"://Cargamos los depositos primero
+                queryAux = "SELECT * FROM TRANSACCION WHERE (fecha = ?) AND (cajero_id = ?) AND (tipo = 'CREDITO') ORDER BY fecha DESC, hora DESC, monto DESC";
+                break;
+            case "listado-transacciones-dia-cajero-retiros"://Cargamos los depositos
+                queryAux = "SELECT * FROM TRANSACCION WHERE (fecha = ?) AND (cajero_id = ?) AND (tipo = 'DEBITO') ORDER BY fecha DESC, hora DESC, monto DESC;";
+                break;
+            case "listado-transacciones-dia-cajero-balance"://Cargamos los depositos
+                queryAux = "SELECT tipo, SUM(monto) AS balance FROM TRANSACCION WHERE (fecha = ?) AND (cajero_id = ?) AND (tipo = 'DEBITO' OR tipo = 'CREDITO') GROUP BY tipo;";
+                break;
+                //transacciones por intervalo tiempo
+            case "listado-cantidad-transacciones-cajero-intervalo-tiempo":
+                queryAux = "SELECT fecha, COUNT(*) AS cantidad FROM TRANSACCION WHERE (fecha BETWEEN ? AND ?) AND (cajero_id = ?) GROUP BY fecha ORDER BY fecha DESC;";
+                break;
+                //REPORTES CLIENTE
+            case "listado-cuenta-con-mas-dinero":
+                queryAux = "SELECT * FROM CUENTA WHERE cliente = ? ORDER BY credito DESC LIMIT 1;";
+                break;
+            case "listado-ver-ultimas-15-transacciones-por-cuenta":
+                queryAux = "SELECT * FROM TRANSACCION WHERE (cuenta_id = ?) AND (fecha BETWEEN DATE_SUB(?, INTERVAL 1 YEAR) AND ?) ORDER BY monto DESC, fecha DESC LIMIT 15;";
+                break;
+            case "listado-cuentas-ultimas-15-transacciones":
+                queryAux = "SELECT * FROM CUENTA WHERE cliente = ?";
+                break;
+            case "listado-cuentas-intervalo-tiempo":
+                queryAux = "SELECT * FROM CUENTA WHERE cliente = ?";
+                break;
+            case "listado-transaciones-por-cuenta-intervalo-tiempo":
+                queryAux = "SELECT cuenta_id, fecha, hora, tipo, monto FROM TRANSACCION WHERE (cuenta_id = ?) AND (fecha BETWEEN ? AND ?) ORDER BY fecha DESC, hora DESC, monto DESC;";
+                break;
                 
         }    
         System.out.println(queryAux);
@@ -199,6 +228,28 @@ public class QuerysTitulosTablas {
                 break;
             case "listado-historial-cambio-datos-usuario":
                 tituloAux = "codigo,Codigo usuario,Rol Usuario,Codigo del gerente que hizo el cambio,Campo modificado,Valor inicial,Valor final,Fecha ";
+                break;
+                //REPORTES CAJERO
+            case "listado-transacciones-dia-cajero"://Cargamos los depositos primero
+                tituloAux = "Codigo transaccion,Cuenta,Fecha,Hora,Tipo,Monto,Cajero codigo";
+                break;
+            case "listado-cantidad-transacciones-cajero-intervalo-tiempo":
+                tituloAux = "Fecha,Cantidad,Ver transacciones de ese dia";
+                break;
+            case "listado-cuenta-con-mas-dinero":
+                tituloAux = "Codigo,Codigo cliente,Fecha,Credito,Ver transacciones";
+                break;
+            case "listado-ver-ultimas-15-transacciones-por-cuenta":
+                tituloAux = "Codigo transaccion,Cuenta,Fecha,Hora,Tipo,Monto,Cajero codigo";
+                break;
+            case "listado-cuentas-ultimas-15-transacciones":
+                tituloAux = "Codigo de cuenta,Codigo propietario,Creada en,Balance actual (Q),Ultimas 15 transacciones mas grandes";
+                break;
+            case "listado-cuentas-intervalo-tiempo":
+                tituloAux = "Codigo de cuenta,Codigo propietario,Creada en,Balance actual (Q),Transacciones en intervalo tiempo";
+                break;
+            case "listado-transaciones-por-cuenta-intervalo-tiempo":
+                tituloAux = "Codigo cuenta, Fecha, Hora, Tipo transaccion, Monto, Saldo inicial, Saldo final";
                 break;
         }        
         System.out.println(tituloAux);

@@ -227,14 +227,15 @@ PARTE 2: Ver esas transacciones
 //sumar cuentas por cliente
     //RESULTADO
     SELECT A.codigo, A.nombre, A.dpi, A.birth, A.direccion, A.sexo, SUM(B.credito) AS total FROM CUENTA B JOIN CLIENTE A ON B.cliente = A.codigo GROUP BY A.codigo ORDER BY SUM(B.credito) DESC;
-+---------+----------+
-| codigo  | total    |
-+---------+----------+
-| CLI4175 | 13500.00 |
-| CLI4860 |  7500.00 |
-| CLI1    |  6000.24 |
-| CLI2    |  4000.24 |
-+---------+----------+
++---------+---------------------------+---------------+------------+-----------------------------------+-----------+----------+
+| codigo  | nombre                    | dpi           | birth      | direccion                         | sexo      | total    |
++---------+---------------------------+---------------+------------+-----------------------------------+-----------+----------+
+| CLI4175 | Cliente a tener solicitud | 123123132     | 2020-11-10 | a4444                             | Femenino  | 13500.00 |
+| CLI4860 | CLIENTE PRUEBA 1          | 201830121     | 2020-11-10 | addd                              | Masculino |  7500.00 |
+| CLI1    | Nombre cli1               | 111111111     | 2020-11-27 | Nueva direccion 4 av siempre viva | Femenino  |  6000.24 |
+| CLI2    | Marcos Tux                | 2222222190901 | 2000-01-12 | 4ta calle 1-10 zona 13, Guatemala | Masculino |  4000.24 |
++---------+---------------------------+---------------+------------+-----------------------------------+-----------+----------+
+
 //CORROBORAR POR CUENTAS
 mysql> SELECT * FROM CUENTA;
 +-----------+---------+------------+----------+
@@ -306,6 +307,20 @@ mysql> SELECT codigo FROM CLIENTE;
 | CLI2    |
 | CLI3793 |
 | CLI9517 |
+//mostrar clientes sin transacciones en intervalo de tiempo
+    //RESPUESTA
+  SELECT AA.codigo, AA.nombre, AA.dpi, AA.birth, AA.direccion, AA.sexo FROM CLIENTE AS AA
+    LEFT JOIN (SELECT C.cliente FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id WHERE fecha BETWEEN "2020-11-10" AND "2020-11-13" GROUP BY C.cliente) AS BB
+    ON AA.codigo = BB.cliente WHERE BB.cliente IS NULL;
++---------+------------------+---------------+------------+-----------------------------------+-----------+
+| codigo  | nombre           | dpi           | birth      | direccion                         | sexo      |
++---------+------------------+---------------+------------+-----------------------------------+-----------+
+| CLI1    | Nombre cli1      | 111111111     | 2020-11-27 | Nueva direccion 4 av siempre viva | Femenino  |
+| CLI1045 | cliente 124      | 201830121     | 2020-11-10 | ddd                               | Femenino  |
+| CLI2    | Marcos Tux       | 2222222190901 | 2000-01-12 | 4ta calle 1-10 zona 13, Guatemala | Masculino |
+| CLI3793 | CLIENTE PRUEBA 2 | 123123        | 2020-11-10 | dddad                             | Masculino |
+| CLI9517 | cliente 124      | 201830121     | 2020-11-10 | ddd                               | Femenino  |
++---------+------------------+---------------+------------+-----------------------------------+-----------+
 
 ////////////////////////////////////////////////////5. Ver cajero que más transacciones ha realizado (039)
 //Ver transacciones agrupados por cajero
@@ -341,6 +356,15 @@ mysql> SELECT codigo FROM CLIENTE;
 | cajero_id | cantidad |
 +-----------+----------+
 | CAJ4489   |        4 |
+//Agregamos los datos del cajero
+    //RESPUESTA
+    SELECT A.cajero_id, B.nombre, B.turno, B.dpi, B.sexo, COUNT(*) AS cantidad FROM TRANSACCION AS A JOIN CAJERO AS B ON A.cajero_id = B.codigo WHERE (A.fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (A.cajero_id <> "101") GROUP BY A.cajero_id ORDER BY A.cajero_id DESC LIMIT 1;
++-----------+-----------------+----------+-----------+----------+----------+
+| cajero_id | nombre          | turno    | dpi       | sexo     | cantidad |
++-----------+-----------------+----------+-----------+----------+----------+
+| CAJ4489   | Cajero prueba 1 | MATUTINO | 201830121 | Femenino |        2 |
++-----------+-----------------+----------+-----------+----------+----------+
+
 //Ver transferencias
     SELECT * FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") ORDER BY fecha DESC, hora DESC, monto DESC;
 +----------+-----------+------------+----------+---------+---------+-----------+
@@ -404,6 +428,21 @@ mysql> SELECT codigo FROM CLIENTE;
 | TRA1598  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO                   | 1000.00 | CAJ4489   |
 | TRA8388  | CUE3150   | 2020-11-10 | 12:00:00 | null                     | 1000.00 | CAJ4489   |
 +----------+-----------+------------+----------+--------------------------+---------+-----------+
+/Agregar intervalo dinero
+    //RESPUESTA
+    SELECT A.* FROM TRANSACCION A JOIN CUENTA B ON A.cuenta_id = B.codigo WHERE (B.cliente = "CLI4860") AND (monto BETWEEN "2500" AND "5000") ORDER BY A.fecha DESC, A.hora, A.monto DESC;
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| codigo   | cuenta_id | fecha      | hora     | tipo                     | monto   | cajero_id |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+| TRA10208 | CUE3150   | 2020-11-10 | 12:00:00 | CREDITO                  | 5000.00 | CAJ4489   |
+| TRA2883  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4053  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA4448  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5311  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA8180  | CUE3150   | 2020-11-10 | 12:00:00 | debito por transferencia | 3000.00 | 101       |
+| TRA5234  | CUE6083   | 2020-11-10 | 12:00:00 | DEBITO POR TRANSFERENCIA | 2500.00 | 101       |
++----------+-----------+------------+----------+--------------------------+---------+-----------+
+
 ////////////////////////////////////////////////////REPORTES CAJERO
 ////////////////////////////////////////////////////1. Mostrar transacciones por el cajero en un intervalo de tiempo (043) en intervalo de tiempo
 //Ver transferencias
@@ -416,6 +455,8 @@ mysql> SELECT codigo FROM CLIENTE;
 | TRA1598  | CUE3150   | 2020-11-10 | 12:00:00 | DEBITO  | 1000.00 | CAJ4489   |
 | TRA8388  | CUE3150   | 2020-11-10 | 12:00:00 | null    | 1000.00 | CAJ4489   |
 +----------+-----------+------------+----------+---------+---------+-----------+
+//Ver transferencias agrupados por dia
+    SELECT fecha, COUNT(*) FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") GROUP BY fecha ORDER BY fecha DESC, hora DESC, monto DESC;
 //RETIROS
     SELECT * FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") AND (tipo = "DEBITO") ORDER BY fecha DESC, hora DESC, monto DESC;
 +---------+-----------+------------+----------+--------+---------+-----------+

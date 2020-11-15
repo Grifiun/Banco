@@ -1,3 +1,5 @@
+<%String codigocajero = (String) session.getAttribute("codigo");
+%>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -27,9 +29,8 @@
           REPORTES                   
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-         <a class="dropdown-item" href="">Listado de depositos y retiros realizados durante el turno</a>
-         <a class="dropdown-item" href="">Listado de las transacciones realizadas por dia en un intervalo de tiempo</a>
-         <a class="dropdown-item" href=""></a>
+            <a class="dropdown-item" href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-dia-cajero&codigoUsuario=<%=codigocajero%>">Listado de depositos y retiros realizados durante el turno</a>
+            <a class="dropdown-item" href="ingresar-intervalo-dato.jsp?intervalo=tiempo&direccion=listado-cantidad-transacciones-cajero-intervalo-tiempo&codigoUsuario=<%=codigocajero%>">Listado de las transacciones realizadas por dia en un intervalo de tiempo</a>
         </div>
       </li>
       <li class="nav-item dropdown">

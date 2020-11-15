@@ -1,0 +1,93 @@
+<%
+    String tiempoAxRr1 = (String) request.getParameter("tiempo1");
+    String tiempoAxRr2 = (String) request.getParameter("tiempo2");
+    String cuentaAuxiliarRr = (String)request.getParameter("cuenta-id");
+    restriccionLista = new ArrayList();
+    restriccionLista.add(cuentaAuxiliarRr);
+    restriccionLista.add(tiempoAxRr1);
+    restriccionLista.add(tiempoAxRr2);
+    
+    lista = cons.obtenerRegistros(query, 
+           new ArrayList<String>(restriccionLista));
+               
+    restriccionLista.clear();
+    restriccionLista.add(cuentaAuxiliarRr);
+    List<ArrayList<String>> listaCreditoCuentaId1;
+    listaCreditoCuentaId1 = cons.obtenerRegistros("SELECT credito FROM CUENTA WHERE codigo = ?", 
+           new ArrayList<String>(restriccionLista));
+    String creditoCuentaId1;
+    try{
+        creditoCuentaId1 = listaCreditoCuentaId1.get(0).get(0);
+    }catch(Exception ex){
+        creditoCuentaId1 = "0";
+    }
+%>
+<h1>Transacciones en el intervalo de tiempo</h1>
+<h3>Fecha inicial: <%=tiempoAxRr1%> y fecha final: <%=tiempoAxRr2%></h3>
+<h3>Cuenta: <%=cuentaAuxiliarRr%></h3>
+<%   
+    if(lista != null && lista.size() > 0){
+        //listamos las cuentas porque existen
+       %>  
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+                <%
+                        for(int i = 0; i < titulo.size(); i++){
+                %>            
+                <th scope="row"><%=titulo.get(i)%></th>
+                <%
+                    }
+                %>
+            </tr>
+          </thead>
+          <tbody>
+              <%
+                String valorFinal1;//Valor final de los saldos finales ed una transferencia
+                String valorInicial1 = "";//valor que contendra los montos iniciales en una transferencia
+                for(int i = 0; i < lista.size(); i++){
+              %>
+                <tr>
+                    <th scope="row"><%=i + 1%></th>
+                <%
+                    for(int j = 0; j < lista.get(0).size(); j++){
+                %>
+                        <td><%=lista.get(i).get(j)%></td>
+                    <%
+                    } //En la posicion lista.get(i).get(4) estan los montos manejados por esa transaccion
+                        
+                        if(i == 0){//si es la primera posicion el valor sera el saldo actual de la cuenta
+                            valorFinal1 = creditoCuentaId1;
+                        }else{
+                            valorFinal1 = valorInicial1; //Si no es la primra posicion sera el saldo inicial anterior
+                        }
+                                               
+                        //En la posicion lista.get(i).get(3) estan los tipos de esa transaccion
+                        //Si es un retiro el valor inicial el dinero actual + monto
+                        if(lista.get(i).get(3).equalsIgnoreCase("debito") || lista.get(i).get(3).equalsIgnoreCase("debito por transferencia")){
+                            String montoAux = lista.get(i).get(4);
+                            valorInicial1 = String.valueOf(Double.parseDouble(valorFinal1) + Double.parseDouble(montoAux));
+                        }else{//es un deposito
+                            String montoAux = lista.get(i).get(4);
+                            valorInicial1 = String.valueOf(Double.parseDouble(valorFinal1) - Double.parseDouble(montoAux));
+                        }
+                        
+                    %>
+                    <td><%=valorInicial1%></td>
+                    <td><%=valorFinal1%></td>
+                    
+                </tr>
+              <%
+                }      
+              %>
+          </tbody>
+        </table>
+       <%
+    
+    }else{
+%>
+    <h5>Esta cuenta no posee transacciones</h5>
+<% 
+    }
+%>

@@ -27,6 +27,7 @@
         
         ArrayList<String> restriccionLista;
         List<ArrayList<String>> lista;
+           
 
         %>   
         
@@ -99,6 +100,20 @@
                 case "listado-transacciones-por-cajero":%><%@include file="../html/tablas/listado-transacciones-por-cajero.html" %><%
                     break;
                 case "listado-historial-cambio-datos-usuario":%><%@include file="../html/tablas/listado-historial-cambio-datos-usuario.html" %><%
+                    break;
+                case "listado-transacciones-dia-cajero":%><%@include file="../html/tablas/listado-transacciones-dia-cajero.html" %><%
+                    break;
+                case "listado-cantidad-transacciones-cajero-intervalo-tiempo":%><%@include file="../html/tablas/listado-cantidad-transacciones-cajero-intervalo-tiempo.html" %><%
+                    break;
+                case "listado-cuenta-con-mas-dinero":%><%@include file="../html/tablas/listado-cuenta-con-mas-dinero.html" %><%
+                    break;
+                case "listado-cuentas-ultimas-15-transacciones":%><%@include file="../html/tablas/listado-cuentas-ultimas-15-transacciones.html" %><%
+                    break;
+                case "listado-ver-ultimas-15-transacciones-por-cuenta":%><%@include file="../html/tablas/listado-ver-ultimas-15-transacciones-por-cuenta.html" %><%
+                    break;
+                case "listado-cuentas-intervalo-tiempo":%><%@include file="../html/tablas/listado-cuentas-intervalo-tiempo.html" %><%
+                    break;
+                case "listado-transaciones-por-cuenta-intervalo-tiempo":%><%@include file="../html/tablas/listado-transaciones-por-cuenta-intervalo-tiempo.html" %><%
                     break;
 
             } 
