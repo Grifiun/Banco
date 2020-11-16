@@ -6,6 +6,17 @@
     restriccionLista.add(nombreAux);
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    auxiliarTitulos.remove(auxiliarTitulos.size() - 1);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Listado clientes con filtro de nombre:"+nombreAux);            
+    session.setAttribute("nombrePDFSaliente","Listado clientes con filtro de nombre:"+nombreAux);
+    session.setAttribute("archivojrxml","reporte-5-columnas");
 %>
 <h1>Listado clientes con nombre: <%=nombreAux%></h1>
 <form class="col-12 caja2" method="post" action="gerente-listar-datos.jsp?tipoListado=listado-clientes-por-nombre" >             
@@ -21,6 +32,10 @@
         <button type="submit" class="btn btn-dark">Quitar filtro</button>  
     </div>
 </form>
+<%
+    if(lista != null && lista.size() > 0){
+    %>
+<a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -58,3 +73,11 @@
       %>
   </tbody>
 </table>
+    <%
+    
+    }else{
+%>
+<h5>No hay clientes que cumplan con ese filtro de nombre</h5>
+<% 
+}
+%>

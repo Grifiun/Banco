@@ -19,13 +19,28 @@
     String query31 = queryObjeto.getQuery("listado-transacciones-dia-cajero-balance");
     List<ArrayList<String>> lista3 = cons.obtenerRegistros(query31, 
            new ArrayList<String>(restriccionLista));
+    String query41 = queryObjeto.getQuery("listado-transacciones-dia-cajero-retiros-depositos");
+    List<ArrayList<String>> lista4 = cons.obtenerRegistros(query41, 
+           new ArrayList<String>(restriccionLista));      
+    
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista4);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Transacciones del cajero ("+ltdc1+") en el turno, totales: creditos: Q"+lista3.get(0).get(1)+" y debitos: Q"+lista3.get(1).get(1));            
+    session.setAttribute("nombrePDFSaliente","Transacciones del cajero ("+ltdc1+") en el turno, totales: creditos: Q"+lista3.get(0).get(1)+" y debitos: Q"+lista3.get(1).get(1));
+    session.setAttribute("archivojrxml","reporte-7-columnas");
 %>
 <h1>Transacciones del cajero en el turno</h1>
 <%   
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
        %>  
-       <h3>Total depositos: <%=lista3.get(0).get(1)%></h3>
+       <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
+       <h3>Total depositos: Q<%=lista3.get(0).get(1)%></h3>
         <table class="table">
           <thead class="thead-dark">
             <tr>
@@ -70,7 +85,7 @@
     if(lista2 != null && lista2.size() > 0){
         //listamos las cuentas porque existen
        %>  
-       <h3>Total retiros <%=lista3.get(1).get(1)%></h3>
+       <h3>Total retiros: Q<%=lista3.get(1).get(1)%></h3>
         <table class="table">
           <thead class="thead-dark">
             <tr>

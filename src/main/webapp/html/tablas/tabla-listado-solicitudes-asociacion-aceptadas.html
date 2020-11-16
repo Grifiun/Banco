@@ -3,11 +3,22 @@
     listaDatosSolicitudesAceptadas.add((String) session.getAttribute("codigo"));
     List<ArrayList<String>> listaSolicitudesAceptadas = cons.obtenerRegistros(query, 
            new ArrayList<String>(listaDatosSolicitudesAceptadas));
-%>
-<%
-    if(listaSolicitudesAceptadas.size() > 0){
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",listaSolicitudesAceptadas);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Listado solicitudes aceptadas por otros usuarios");            
+    session.setAttribute("nombrePDFSaliente","Listado solicitudes aceptadas por otros usuarios");
+    session.setAttribute("archivojrxml","reporte-5-columnas");
 %>
 <h1>Listado solicitudes aceptadas</h1>
+<%
+    if(listaSolicitudesAceptadas != null && listaSolicitudesAceptadas.size() > 0){
+%>
+<a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -29,7 +40,7 @@
         <tr>
             <th scope="row"><%=i + 1%></th>
         <%
-            for(int j = 0; j < listaSolicitudesAceptadas.get(0).size() - 1; j++){
+            for(int j = 0; j < listaSolicitudesAceptadas.get(0).size(); j++){
         %>
                 <td><%=listaSolicitudesAceptadas.get(i).get(j)%></td>
             <%

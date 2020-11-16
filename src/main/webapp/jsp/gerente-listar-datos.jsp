@@ -27,6 +27,7 @@
         
         ArrayList<String> restriccionLista;
         List<ArrayList<String>> lista;
+        ArrayList<String> auxiliarTitulos;
            
 
         %>   

@@ -2,8 +2,24 @@
     restriccionLista = new ArrayList();
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
+    
+    auxiliarTitulos = new ArrayList<>(titulo);
+    auxiliarTitulos.remove(auxiliarTitulos.size() - 1);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Listado top 10 clientes con mas dinero entre sus cuentas");            
+    session.setAttribute("nombrePDFSaliente","Listado top 10 clientes con mas dinero entre sus cuentas");
+    session.setAttribute("archivojrxml","reporte-5-columnas");
 %>
 <h1>Listado top 10 clientes con mas dinero entre sus cuentas</h1>
+<%
+    if(lista != null && lista.size() > 0){
+    %>    
+
+<a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -41,3 +57,10 @@
       %>
   </tbody>
 </table>
+    <%
+    }else{
+%>
+    <h3>No se puede mostrar este reporte por insuficiencia de datos</h3>   
+    <%
+    }
+%>

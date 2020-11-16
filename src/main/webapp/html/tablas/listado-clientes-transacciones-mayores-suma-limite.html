@@ -6,8 +6,23 @@
     listaDatosClientesR3.add("Limite por suma de transaccion");
     List<ArrayList<String>> listaLimiteR3 = cons.obtenerRegistros("SELECT monto FROM LIMITE WHERE tipo = ?", 
            new ArrayList<String>(listaDatosClientesR3));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    auxiliarTitulos.remove(auxiliarTitulos.size() - 1);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",listaClientesR3);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Listado clientes con suma de transacciones mayores a un limite: Q"+listaLimiteR3.get(0).get(0));            
+    session.setAttribute("nombrePDFSaliente","Listado clientes con transacciones mayores a un limite: Q"+listaLimiteR3.get(0).get(0));
+    session.setAttribute("archivojrxml","reporte-5-columnas");
 %>
 <h1>Listado clientes con suma de transacciones mayores a un limite: Q<%=listaLimiteR3.get(0).get(0)%></h1>
+<%
+    if(listaClientesR3 != null && listaClientesR3.size() > 0){
+    %>
+<a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -45,3 +60,11 @@
       %>
   </tbody>
 </table>
+    <%
+    
+    }else{
+%>
+<h5>No hay clientes que cumplan con esa condicion</h5>
+<% 
+}
+%>

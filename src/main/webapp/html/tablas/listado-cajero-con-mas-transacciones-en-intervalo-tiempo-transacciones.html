@@ -9,6 +9,16 @@
     
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista)); 
+    
+    auxiliarTitulos = new ArrayList<>(titulo);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Transacciones del cajero ("+clienteAuxR72+") con mas transacciones en el intervalo de tiempo: "+tiempo1R72+" y "+tiempo2R72);            
+    session.setAttribute("nombrePDFSaliente","Transacciones del cajero ("+clienteAuxR72+") con mas transacciones en el intervalo de tiempo: "+tiempo1R72+" y "+tiempo2R72);
+    session.setAttribute("archivojrxml","reporte-7-columnas");
 %>
 <h1>Transacciones del cajero con mas transacciones entre el intervalo</h1>
 <h3>Fecha inicial : <%=tiempo1R72%> y Fecha final : <%=tiempo2R72%></h3>
@@ -17,6 +27,7 @@
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
        %>  
+       <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
         <table class="table">
           <thead class="thead-dark">
             <tr>

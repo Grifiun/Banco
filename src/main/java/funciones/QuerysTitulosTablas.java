@@ -46,13 +46,13 @@ public class QuerysTitulosTablas {
                 queryAux = "SELECT credito FROM CUENTA WHERE codigo = ?";                
                 break;
             case "listado-solicitudes-asociacion-sin-responder"://Para ver las solicitudes pendientes
-                queryAux = "SELECT * FROM ASOCIACION WHERE cliente_propietario_id = ? AND estado = 'pendiente'";                
+                queryAux = "SELECT codigo, cuenta_asociada, estado, cliente_id, cliente_propietario_id FROM ASOCIACION WHERE cliente_propietario_id = ? AND estado = 'pendiente'";                
                 break;
             case "listado-solicitudes-asociacion-aceptadas"://Para ver las solicitudes aceptadas
-                queryAux = "SELECT * FROM ASOCIACION WHERE cliente_id = ? AND estado = 'aceptado'";               
+                queryAux = "SELECT codigo, cuenta_asociada, estado, cliente_id, cliente_propietario_id FROM ASOCIACION WHERE cliente_id = ? AND estado = 'aceptado'";               
                 break;
             case "listado-solicitudes-asociacion-hechas"://Para ver las solicitudes aceptadas
-                queryAux = "SELECT * FROM ASOCIACION WHERE cliente_id = ? AND estado <> 'aceptado'";               
+                queryAux = "SELECT codigo, cuenta_asociada, estado, cliente_id, cliente_propietario_id FROM ASOCIACION WHERE cliente_id = ? AND estado <> 'aceptado'";               
                 break;
             case "listado-cuentas-propias"://Para ver las solicitudes aceptadas
                 queryAux = "SELECT B.codigo, C.nombre, B.credito FROM CUENTA B JOIN CLIENTE C ON B.cliente = C.codigo WHERE B.cliente = ?";               
@@ -66,24 +66,24 @@ public class QuerysTitulosTablas {
             //REPORTES
                 //R2
             case "listado-clientes-transacciones-mayores-limite": //reporte 2 gerente
-                queryAux = "SELECT D.codigo, D.nombre, D.dpi, D.birth, D.direccion, D.sexo FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL AND B.tipo = 'Limite por transaccion' JOIN CUENTA C ON C.codigo = A.cuenta_id JOIN CLIENTE D ON C.cliente = D.codigo WHERE A.monto > B.monto GROUP BY C.cliente;";
+                queryAux = "SELECT D.codigo, D.nombre, D.dpi, D.birth, D.sexo FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL AND B.tipo = 'Limite por transaccion' JOIN CUENTA C ON C.codigo = A.cuenta_id JOIN CLIENTE D ON C.cliente = D.codigo WHERE A.monto > B.monto GROUP BY C.cliente;";
                 break;
             case "listado-transacciones-mayores-limite-por-cliente": //transacciones de reporte 2 gerente
                 queryAux = "SELECT A.* FROM TRANSACCION A JOIN LIMITE B ON A.codigo IS NOT NULL AND B.tipo = 'Limite por transaccion' JOIN CUENTA C ON C.codigo = A.cuenta_id WHERE A.monto > B.monto AND C.cliente = ? ORDER BY A.fecha DESC, A.hora DESC, A.monto DESC;";
                 break;
             //R3
             case "listado-clientes-transacciones-mayores-suma-limite": //reporte 2 gerente
-                queryAux = "SELECT CL.codigo, CL.nombre, CL.dpi, CL.birth, CL.direccion, CL.sexo, D.total FROM (SELECT C.cliente, SUM(A.monto) AS total FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id GROUP BY C.cliente) AS D JOIN LIMITE B ON D.cliente IS NOT NULL AND B.tipo = 'Limite por suma de transaccion' JOIN CLIENTE AS CL ON D.cliente = CL.codigo WHERE D.total > B.monto;";
+                queryAux = "SELECT CL.codigo, CL.nombre, CL.dpi, CL.sexo, D.total FROM (SELECT C.cliente, SUM(A.monto) AS total FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id GROUP BY C.cliente) AS D JOIN LIMITE B ON D.cliente IS NOT NULL AND B.tipo = 'Limite por suma de transaccion' JOIN CLIENTE AS CL ON D.cliente = CL.codigo WHERE D.total > B.monto;";
                 break;
             case "listado-transacciones-por-cliente": //reporte 3 gerente transacciones
                 queryAux = "SELECT A.* FROM TRANSACCION A JOIN CUENTA B ON A.cuenta_id = B.codigo WHERE B.cliente = ? ORDER BY A.fecha DESC, A.hora, A.monto DESC;";
                 break;
                 //R4 gerente
             case "listado-10-clientes-con-mas-dinero":
-                queryAux = "SELECT A.codigo, A.nombre, A.dpi, A.birth, A.direccion, A.sexo, SUM(B.credito) AS total FROM CUENTA B JOIN CLIENTE A ON B.cliente = A.codigo GROUP BY A.codigo ORDER BY SUM(B.credito) DESC;";
+                queryAux = "SELECT A.codigo, A.nombre, A.dpi, A.sexo, SUM(B.credito) AS total FROM CUENTA B JOIN CLIENTE A ON B.cliente = A.codigo GROUP BY A.codigo ORDER BY SUM(B.credito) DESC;";
                 break;
             case "listado-clientes-sin-transacciones-intervalo-tiempo":
-                queryAux = "SELECT AA.codigo, AA.nombre, AA.dpi, AA.birth, AA.direccion, AA.sexo FROM CLIENTE AS AA LEFT JOIN (SELECT C.cliente FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id WHERE fecha BETWEEN ? AND ? GROUP BY C.cliente) AS BB ON AA.codigo = BB.cliente WHERE BB.cliente IS NULL;";
+                queryAux = "SELECT AA.codigo, AA.nombre, AA.dpi, AA.birth, AA.sexo FROM CLIENTE AS AA LEFT JOIN (SELECT C.cliente FROM TRANSACCION A JOIN CUENTA C ON C.codigo = A.cuenta_id WHERE fecha BETWEEN ? AND ? GROUP BY C.cliente) AS BB ON AA.codigo = BB.cliente WHERE BB.cliente IS NULL;";
                 break;
                 //R6
             case "listado-cajero-con-mas-transacciones-en-intervalo-tiempo":
@@ -111,6 +111,9 @@ public class QuerysTitulosTablas {
                 break;
             case "listado-transacciones-dia-cajero-retiros"://Cargamos los depositos
                 queryAux = "SELECT * FROM TRANSACCION WHERE (fecha = ?) AND (cajero_id = ?) AND (tipo = 'DEBITO') ORDER BY fecha DESC, hora DESC, monto DESC;";
+                break;
+            case "listado-transacciones-dia-cajero-retiros-depositos"://Cargamos los depositos y retiros ordenados por tipo
+                queryAux = "SELECT * FROM TRANSACCION WHERE (fecha = ?) AND (cajero_id = ?) AND (tipo = 'DEBITO' OR tipo = 'CREDITO') ORDER BY tipo DESC, fecha DESC, hora DESC, monto DESC;";
                 break;
             case "listado-transacciones-dia-cajero-balance"://Cargamos los depositos
                 queryAux = "SELECT tipo, SUM(monto) AS balance FROM TRANSACCION WHERE (fecha = ?) AND (cajero_id = ?) AND (tipo = 'DEBITO' OR tipo = 'CREDITO') GROUP BY tipo;";
@@ -178,36 +181,36 @@ public class QuerysTitulosTablas {
                 tituloAux = "nombre,dpi";                
                 break;
             case "listado-solicitudes-asociacion-sin-responder"://Para confirmar que el numero de cuenta ingresado es correcta
-                tituloAux = "Codigo solicitud,Estado,Codigo solicitante,Codigo propietario,Respuesta";                
+                tituloAux = "Codigo solicitud,Cuenta asociada,Estado,Solicitante,Propietario,Respuesta";                
                 break;    
             case "listado-solicitudes-asociacion-aceptadas"://Para confirmar que el numero de cuenta ingresado es correcta
-                tituloAux = "Codigo solicitud,Estado,Codigo solicitante,Codigo propietario";                
+                tituloAux = "Codigo solicitud,Cuenta asociada,Estado,Solicitante,Propietario";                
                 break; 
             case "listado-solicitudes-asociacion-hechas"://Para confirmar que el numero de cuenta ingresado es correcta
-                tituloAux = "Codigo solicitud,Estado,Codigo solicitante,Codigo propietario";                
+                tituloAux = "Codigo solicitud,Cuenta asociada,stado,Solicitante,Propietario";                
                 break; 
                 //REPORTES
                 //R2
             case "listado-clientes-transacciones-mayores-limite": //reporte 2 gerente
-                tituloAux = "Codigo,Nombre,DPI,Fecha de nacimiento,Direccion,Sexo,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones 4.agregar cuenta";
+                tituloAux = "Codigo,Nombre,DPI,Fecha de nacimiento,Sexo,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones 4.agregar cuenta";
                 break;
             case "listado-transacciones-mayores-limite-por-cliente": //transacciones de reporte 2 gerente
                 tituloAux = "Codigo transaccion,Cuenta,Fecha,Hora,Tipo,Monto,Cajero codigo";
                 break;
                 //R3
             case "listado-clientes-transacciones-mayores-suma-limite": //reporte 3 gerente
-                tituloAux = "Codigo,Nombre,DPI,Fecha de nacimiento,Direccion,Sexo,Total transacciones,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones 4.agregar cuenta";
+                tituloAux = "Codigo,Nombre,DPI,Sexo,Total transacciones,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones 4.agregar cuenta";
                 break;
             case "listado-transacciones-por-cliente": //reporte 3 gerente transacciones
                 tituloAux = "Codigo transaccion,Cuenta,Fecha,Hora,Tipo,Monto,Cajero codigo";
                 break;
                  //R4 gerente
             case "listado-10-clientes-con-mas-dinero":
-                tituloAux = "Codigo,Nombre,DPI,Fecha de nacimiento,Direccion,Sexo,Dinero entre las cuentas,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones 4.agregar cuenta";
+                tituloAux = "Codigo,Nombre,DPI,Sexo,Dinero entre las cuentas,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones 4.agregar cuenta";
                 break;
                 //R5
             case "listado-clientes-sin-transacciones-intervalo-tiempo":
-                tituloAux = "Codigo,Nombre,DPI,Fecha de nacimiento,Direccion,Sexo,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones generales 4.agregar cuenta";
+                tituloAux = "Codigo,Nombre,DPI,Nacimiento,Sexo,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones generales 4.agregar cuenta";
                 break;
                 //R6
             case "listado-cajero-con-mas-transacciones-en-intervalo-tiempo":
@@ -218,7 +221,7 @@ public class QuerysTitulosTablas {
                 break;
                 //R7
             case "listado-clientes-por-nombre":
-                tituloAux = "Codigo,Nombre,DPI,Fecha de nacimiento,Sexo,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones 4.agregar cuenta";
+                tituloAux = "Codigo,Nombre,DPI,Nacimiento,Sexo,Acciones: 1.Ver cliente 2.ver cuentas 3.ver transacciones 4.agregar cuenta";
                 break;
             case "listado-transacciones-cliente-intervalo-dinero":
                 tituloAux = "Codigo transaccion,Cuenta,Fecha,Hora,Tipo,Monto,Cajero codigos";
