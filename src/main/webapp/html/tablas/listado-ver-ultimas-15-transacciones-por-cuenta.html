@@ -6,13 +6,24 @@
     restriccionLista.add(fechaSistemaRep1Cliente2);
     restriccionLista.add(fechaSistemaRep1Cliente2);
     lista = cons.obtenerRegistros(query, 
-           new ArrayList<String>(restriccionLista)); 
+           new ArrayList<String>(restriccionLista));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Ultimas 15 transacciones mas grandes de la cuenta"+cuentaAuxiliarReporte1);            
+    session.setAttribute("nombrePDFSaliente","Ultimas 15 transacciones mas grandes de la cuenta"+cuentaAuxiliarReporte1);
+    session.setAttribute("archivojrxml","reporte-7-columnas");
 %>
 <h1>Ultimas 15 transacciones mas grandes de la cuenta <%=cuentaAuxiliarReporte1%></h1>
 <%   
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
        %>  
+       <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
         <table class="table">
           <thead class="thead-dark">
             <tr>

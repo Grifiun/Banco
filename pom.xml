@@ -13,7 +13,6 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
@@ -25,6 +24,11 @@
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency> 
+            <groupId>net.sf.jasperreports</groupId> 
+            <artifactId>jasperreports</artifactId> 
+            <version>6.15.0</version> 
         </dependency>
     </dependencies>
 

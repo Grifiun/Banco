@@ -10,12 +10,23 @@
     restriccionLista.add("Limite por transaccion");
     List<ArrayList<String>> listaLimite1 = cons.obtenerRegistros("SELECT monto FROM LIMITE WHERE tipo = ?", 
            new ArrayList<String>(restriccionLista));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Transacciones del cliente ("+clienteAuxR2+") que superan el limite establecido: Q"+listaLimite1.get(0).get(0));            
+    session.setAttribute("nombrePDFSaliente","Transacciones del cliente ("+clienteAuxR2+") que superan el limite establecido: Q"+listaLimite1.get(0).get(0));
+    session.setAttribute("archivojrxml","reporte-7-columnas");
 %>
 <h1>Transacciones del cliente que superan el limite establecido: <%=listaLimite1.get(0).get(0)%></h1>
 <%   
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
        %>  
+       <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
         <table class="table">
           <thead class="thead-dark">
             <tr>

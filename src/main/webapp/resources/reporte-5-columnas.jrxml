@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte-5-columnas-jrxml" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="DejaVu Sans" fontSize="50" isBold="false"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="DejaVu Sans" fontSize="18" isBold="false"/>
+	<style name="Column header" forecolor="#666666" fontName="DejaVu Sans" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="DejaVu Sans"/>
+	<style name="Row" mode="Transparent" fontName="DejaVu Sans" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="Dataset1" uuid="7c83c3c7-c6ed-42c5-8b10-89d819ca6692">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="_THIS" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="subtitulo" class="java.lang.String">
+		<defaultValueExpression><![CDATA["subtitulo"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="columna0" class="java.util.List">
+		<defaultValueExpression><![CDATA[Arrays.asList("col 0 prueba 1", "col 0 prueba 2")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="columna1" class="java.util.List">
+		<defaultValueExpression><![CDATA[Arrays.asList("col 1 prueba 1", "col 1 prueba 2")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="columna2" class="java.util.List">
+		<defaultValueExpression><![CDATA[Arrays.asList("col 2 prueba 1", "col 2 prueba 2")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="columna3" class="java.util.List">
+		<defaultValueExpression><![CDATA[Arrays.asList("col 3 prueba 1", "col 3 prueba 2")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="columna4" class="java.util.List">
+		<defaultValueExpression><![CDATA[Arrays.asList("col 4 prueba 1", "col 4 prueba 2")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="columna5" class="java.util.List">
+		<defaultValueExpression><![CDATA[Arrays.asList("col 5 prueba 1", "col 5 prueba 2")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="columna6" class="java.util.List">
+		<defaultValueExpression><![CDATA[Arrays.asList("col 6 prueba 1", "col 6 prueba 2")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo0" class="java.lang.String">
+		<defaultValueExpression><![CDATA["titulo0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["titulo1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["titulo2"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo3" class="java.lang.String">
+		<defaultValueExpression><![CDATA["titulo3"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo4" class="java.lang.String">
+		<defaultValueExpression><![CDATA["titulo4"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="132" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="551" height="95" backcolor="#000000" uuid="6c6ca4e1-17cd-4913-93d6-5e670ea9ae8a"/>
+				<staticText>
+					<reportElement x="180" y="10" width="210" height="43" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="12b3c8a7-b419-411d-8a3d-2b5c1c176ec1">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans" size="36"/>
+					</textElement>
+					<text><![CDATA[REPORTES]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="10" y="60" width="534" height="30" forecolor="#FFFFFF" uuid="d5cdb583-d2a4-48cc-8c31-410caf662047"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{subtitulo}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="100" width="551" height="32" forecolor="#000000" backcolor="#CC0000" uuid="e3c14156-5b51-4201-918b-97fdc012e5d4"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="307" y="12" width="144" height="20" forecolor="#FFFFFF" uuid="5c3301e7-a737-4c59-8a2f-a6c79fd1adb8"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="10" width="80" height="30" uuid="6f950b90-8be4-4de1-abde-18bc0821623b"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo0}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="10" width="160" height="30" uuid="cd5fbac0-d0a6-4035-a2ff-a2c9a1cbed6b"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="10" width="130" height="30" uuid="ed0f437d-a4bb-4b0c-885c-0538e7acaf90"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="10" width="80" height="30" uuid="345238cb-5586-438e-806b-68a4404fcb92"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="10" width="84" height="30" uuid="b34cb039-8c28-4cea-9ad4-412cee98a863"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo4}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="60" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="60" uuid="b50221b5-8254-440b-8c6f-1f0b138c9259"/>
+				<componentElement>
+					<reportElement x="10" y="10" width="80" height="30" uuid="3b98e42a-99ca-4a56-90e5-57ae335a2c4f"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="Dataset1" uuid="af755930-d5af-4910-88bc-cdf3c6d3a718">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{columna0})]]></dataSourceExpression>
+						</datasetRun>
+						<jr:listContents height="30" width="80">
+							<textField>
+								<reportElement x="0" y="0" width="78" height="30" uuid="86f38784-6777-4b99-9c6b-bb6b0840fe76"/>
+								<textFieldExpression><![CDATA[$F{_THIS}]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<componentElement>
+					<reportElement x="90" y="10" width="160" height="30" uuid="aa9028b7-38c6-4d3d-8384-e988265a934c"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="Dataset1" uuid="7431345d-5bc6-4998-967e-84e7c8f4ae5f">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{columna1})]]></dataSourceExpression>
+						</datasetRun>
+						<jr:listContents height="30" width="160">
+							<textField>
+								<reportElement x="0" y="0" width="160" height="30" uuid="815aa99d-33ca-4ff6-8aa1-bce369dab414"/>
+								<textFieldExpression><![CDATA[$F{_THIS}]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<componentElement>
+					<reportElement x="250" y="10" width="130" height="30" uuid="edefbff4-7ac2-4bce-8332-21a4a39c3843"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="Dataset1" uuid="b4fa9a8c-a6ba-4a2c-a34f-a8781855c0a0">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{columna2})]]></dataSourceExpression>
+						</datasetRun>
+						<jr:listContents height="30" width="130">
+							<textField>
+								<reportElement x="0" y="0" width="130" height="30" uuid="9ab940ac-1244-44c7-8822-5e5dab3f5764"/>
+								<textFieldExpression><![CDATA[$F{_THIS}]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<componentElement>
+					<reportElement x="380" y="10" width="80" height="30" uuid="ab1da49e-d6c4-4a31-8766-1c9075fce526"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="Dataset1" uuid="b553f944-65d3-4350-8515-33ccece490a5">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{columna3})]]></dataSourceExpression>
+						</datasetRun>
+						<jr:listContents height="30" width="80">
+							<textField>
+								<reportElement x="0" y="0" width="78" height="30" uuid="f3017003-c5cb-43bd-b46e-2594af6bba04"/>
+								<textFieldExpression><![CDATA[$F{_THIS}]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<componentElement>
+					<reportElement x="460" y="10" width="84" height="30" uuid="29f538fe-a2d9-43d2-99b0-38847f36d7e6"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="Dataset1" uuid="0d62308c-93b5-4e33-9461-4efe57f0e360">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{columna4})]]></dataSourceExpression>
+						</datasetRun>
+						<jr:listContents height="30" width="84">
+							<textField>
+								<reportElement x="0" y="0" width="84" height="30" uuid="f9f78f2b-05a0-4caf-b3ea-58119e9b62f6"/>
+								<textFieldExpression><![CDATA[$F{_THIS}]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="1133a906-5b71-476e-9f3e-bc97c97058c1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000000" uuid="729c3539-f946-4d0e-a0a7-bda2815ea1b0"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="4834e99c-7f6c-485a-b098-50e5187f2ab4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="433" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="9825b46e-76f1-469a-abb8-a1cc27aad685"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="1" width="197" height="20" forecolor="#FFFFFF" uuid="137d38c7-1a83-4fc5-b156-9d5f1b1a0ddc"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

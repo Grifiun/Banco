@@ -5,12 +5,24 @@
     
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    auxiliarTitulos.remove(auxiliarTitulos.size() - 1);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Reporte ultimas 15 transacciones por cuenta: Listado cuentas");            
+    session.setAttribute("nombrePDFSaliente","Reporte ultimas 15 transacciones por cuenta: Listado cuentas");
+    session.setAttribute("archivojrxml","reporte-4-columnas");
 %>
 <h1>Reporte ultimas 15 transacciones por cuenta: Listado cuentas</h1>
 <%   
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
        %>  
+       <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
        <table class="table">
             <thead class="thead-dark">
               <tr>

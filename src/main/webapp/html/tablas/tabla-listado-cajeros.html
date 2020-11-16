@@ -2,41 +2,63 @@
     ArrayList<String> listaDatosCajero = new ArrayList();
     List<ArrayList<String>> listaCajero = cons.obtenerRegistros(query, 
            new ArrayList<String>(listaDatosCajero));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    auxiliarTitulos.remove(auxiliarTitulos.size() - 1);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",listaCajero);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Listado cajeros");            
+    session.setAttribute("nombrePDFSaliente","Listado cajeros");
+    session.setAttribute("archivojrxml","reporte-6-columnas");
 %>
 <h1>Listado cajeros</h1>
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-        <%
-                for(int i = 0; i < titulo.size(); i++){
-        %>            
-        <th scope="row"><%=titulo.get(i)%></th>
-        <%
-            }
-        %>
-    </tr>
-  </thead>
-  <tbody>
-      <%
-        for(int i = 0; i < listaCajero.size(); i++){
-      %>
+<%
+    if(listaCajero != null && listaCajero.size() > 0){
+    %> 
+    <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
+    <table class="table">
+      <thead class="thead-dark">
         <tr>
-            <th scope="row"><%=i + 1%></th>
-        <%
-            for(int j = 0; j < listaCajero.get(0).size() - 1; j++){
-        %>
-                <td><%=listaCajero.get(i).get(j)%></td>
+          <th scope="col">#</th>
             <%
-            }
-            
+                    for(int i = 0; i < titulo.size(); i++){
+            %>            
+            <th scope="row"><%=titulo.get(i)%></th>
+            <%
+                }
             %>
-            <td><a href="mostrar-datos-usuario.jsp?tipoQuery=listado-cajeros&verUsuario=ver-cajero&codigoUsuario=<%=listaCajero.get(i).get(0)%>" class="btn btn-success">1</a>
-            <a href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-por-cajero&codigoUsuario=<%=listaCajero.get(i).get(0)%>" class="btn btn-success">2</a>
-            <a href="gerente-listar-datos.jsp?tipoListado=listado-historial-cambio-datos-usuario&codigoUsuario=<%=listaCajero.get(i).get(0)%>" class="btn btn-success">3</a></td>
         </tr>
-      <%
-        }      
-      %>
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+          <%
+            for(int i = 0; i < listaCajero.size(); i++){
+          %>
+            <tr>
+                <th scope="row"><%=i + 1%></th>
+            <%
+                for(int j = 0; j < listaCajero.get(0).size() - 1; j++){
+            %>
+                    <td><%=listaCajero.get(i).get(j)%></td>
+                <%
+                }
+
+                %>
+                <td><a href="mostrar-datos-usuario.jsp?tipoQuery=listado-cajeros&verUsuario=ver-cajero&codigoUsuario=<%=listaCajero.get(i).get(0)%>" class="btn btn-success">1</a>
+                <a href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-por-cajero&codigoUsuario=<%=listaCajero.get(i).get(0)%>" class="btn btn-success">2</a>
+                <a href="gerente-listar-datos.jsp?tipoListado=listado-historial-cambio-datos-usuario&codigoUsuario=<%=listaCajero.get(i).get(0)%>" class="btn btn-success">3</a></td>
+            </tr>
+          <%
+            }      
+          %>
+      </tbody>
+    </table>
+        <%
+    }else{
+%>
+    <h3>No hay cajeros en el sistema</h3>   
+    <%
+    }
+%>

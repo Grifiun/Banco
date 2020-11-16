@@ -456,7 +456,7 @@ mysql> SELECT codigo FROM CLIENTE;
 | TRA8388  | CUE3150   | 2020-11-10 | 12:00:00 | null    | 1000.00 | CAJ4489   |
 +----------+-----------+------------+----------+---------+---------+-----------+
 //Ver transferencias agrupados por dia
-    SELECT fecha, COUNT(*) FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") GROUP BY fecha ORDER BY fecha DESC, hora DESC, monto DESC;
+    SELECT fecha, COUNT(*) AS cantidad FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") GROUP BY fecha ORDER BY fecha DESC;
 //RETIROS
     SELECT * FROM TRANSACCION WHERE (fecha BETWEEN "2020-11-10" AND "2020-11-13") AND (cajero_id = "CAJ4489") AND (tipo = "DEBITO") ORDER BY fecha DESC, hora DESC, monto DESC;
 +---------+-----------+------------+----------+--------+---------+-----------+
@@ -549,3 +549,6 @@ mysql> SELECT codigo FROM CLIENTE;
 +---------+---------+------------+---------+
 | CUE3150 | CLI4860 | 2020-11-10 | 7000.00 |
 +---------+---------+------------+---------+
+
+//Obtener transacciones por cuenta e intervalo de tiempo
+    SELECT * FROM TRANSACCION WHERE (cuenta_id = ?) AND (fecha BETWEEN ? AND ?) ORDER BY fecha DESC, hora DESC, monto DESC;

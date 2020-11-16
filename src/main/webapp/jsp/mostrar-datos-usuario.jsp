@@ -33,7 +33,10 @@
         QuerysTitulosTablas queryObjeto = new QuerysTitulosTablas();
         Consultar cons = new Consultar();
         String query = queryObjeto.getQuery(tipoQuery);//obtenemos la query correspondiente  
-        query += " WHERE codigo = ?";   
+        query += " WHERE codigo = ?";  
+        if(verUsuario.equalsIgnoreCase("ver-cajero")){
+            query = queryObjeto.getQuery(tipoQuery)+ "AND codigo = ?";  
+        }
         //titulos de campos
         System.out.println("Ver pagina usuario:"+verUsuario);
          ArrayList<String> identificador = new ArrayList<>(Arrays.asList(queryObjeto.getTitulos(verUsuario).split(",")));

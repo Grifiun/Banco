@@ -9,7 +9,8 @@
     
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
-               
+    //contendra el estado de cuenta completo (saldo antes y despues de cada transaccion)
+    List<ArrayList<String>> listaCompleta1 = new ArrayList<>(lista);  
     restriccionLista.clear();
     restriccionLista.add(cuentaAuxiliarRr);
     List<ArrayList<String>> listaCreditoCuentaId1;
@@ -29,6 +30,7 @@
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
        %>  
+       <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
         <table class="table">
           <thead class="thead-dark">
             <tr>
@@ -51,7 +53,7 @@
                 <tr>
                     <th scope="row"><%=i + 1%></th>
                 <%
-                    for(int j = 0; j < lista.get(0).size(); j++){
+                    for(int j = 0; j < lista.get(i).size(); j++){
                 %>
                         <td><%=lista.get(i).get(j)%></td>
                     <%
@@ -73,13 +75,26 @@
                             valorInicial1 = String.valueOf(Double.parseDouble(valorFinal1) - Double.parseDouble(montoAux));
                         }
                         
+                        listaCompleta1.get(i).add(valorInicial1);
+                        listaCompleta1.get(i).add(valorFinal1);
                     %>
+                    
                     <td><%=valorInicial1%></td>
                     <td><%=valorFinal1%></td>
                     
                 </tr>
               <%
-                }      
+                }
+                
+                auxiliarTitulos = new ArrayList<>(titulo);
+                //removemos un titulo que no nos interesa
+                //Agregamos datos y titulos
+                session.setAttribute("listadoDatos",listaCompleta1);
+                session.setAttribute("listadoTitulos",auxiliarTitulos);
+                //Agregamos detalles
+                session.setAttribute("subtitulo","Transacciones de la cuenta "+cuentaAuxiliarRr+" en el intervalo de tiempo: "+ tiempoAxRr1+" y "+tiempoAxRr2);            
+                session.setAttribute("nombrePDFSaliente","Transacciones de la cuenta "+cuentaAuxiliarRr+" en el intervalo de tiempo: "+ tiempoAxRr1+" y "+tiempoAxRr2);
+                session.setAttribute("archivojrxml","reporte-7-columnas");
               %>
           </tbody>
         </table>

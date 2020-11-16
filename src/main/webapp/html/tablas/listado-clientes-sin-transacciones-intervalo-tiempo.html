@@ -6,9 +6,24 @@
     restriccionLista.add(tiempo2R5);
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    auxiliarTitulos.remove(auxiliarTitulos.size() - 1);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Clientes sin transferencias hechas en el intervalo de tiempo: "+tiempo1R5+" y "+tiempo2R5);            
+    session.setAttribute("nombrePDFSaliente","Clientes sin transferencias hechas en el intervalo de tiempo: "+tiempo1R5+" y "+tiempo2R5);
+    session.setAttribute("archivojrxml","reporte-5-columnas");
 %>
 <h1>Clientes sin transferencias hechas en el intervalo de tiempo seleccionado</h1>
 <h3>Fecha inicial : <%=tiempo1R5%> y Fecha final : <%=tiempo2R5%></h3>
+<%
+    if(lista != null && lista.size() > 0){
+    %>
+<a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -46,3 +61,11 @@
       %>
   </tbody>
 </table>
+    <%
+    
+    }else{
+%>
+<h5>No hay clientes que cumplan con esa condicion</h5>
+<% 
+}
+%>

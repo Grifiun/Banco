@@ -2,8 +2,22 @@
     ArrayList<String> listaDatosGerente = new ArrayList();
     List<ArrayList<String>> listaGerente = cons.obtenerRegistros(query, 
            new ArrayList<String>(listaDatosGerente));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",listaGerente);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Listado gerentes");            
+    session.setAttribute("nombrePDFSaliente","Listado gerentes");
+    session.setAttribute("archivojrxml","reporte-6-columnas");
 %>
 <h1>Listado gerentes</h1>
+<%
+    if(listaGerente != null && listaGerente.size() > 0){
+    %> 
+    <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -37,3 +51,10 @@
       %>
   </tbody>
 </table>
+        <%
+    }else{
+%>
+    <h3>No hay gerentes en el sistema</h3>   
+    <%
+    }
+%>

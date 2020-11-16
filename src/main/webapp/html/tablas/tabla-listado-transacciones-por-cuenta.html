@@ -6,6 +6,8 @@
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
     
+    List<ArrayList<String>> listaCompleta2 = new ArrayList<>(lista);            
+               
     List<ArrayList<String>> listaCreditoCuentaId;
     listaCreditoCuentaId = cons.obtenerRegistros("SELECT credito FROM CUENTA WHERE codigo = ?", 
            new ArrayList<String>(restriccionLista));
@@ -22,6 +24,7 @@
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
        %>  
+       <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
         <table class="table">
           <thead class="thead-dark">
             <tr>
@@ -44,7 +47,7 @@
                 <tr>
                     <th scope="row"><%=i + 1%></th>
                 <%
-                    for(int j = 0; j < lista.get(0).size(); j++){
+                    for(int j = 0; j < lista.get(i).size(); j++){
                 %>
                         <td><%=lista.get(i).get(j)%></td>
                     <%
@@ -66,12 +69,23 @@
                             valorInicial = String.valueOf(Double.parseDouble(valorFinal) - Double.parseDouble(montoAux));
                         }
                         
+                        listaCompleta2.get(i).add(valorInicial);
+                        listaCompleta2.get(i).add(valorFinal);
                     %>
                     <td><%=valorInicial%></td>
                     <td><%=valorFinal%></td>
                 </tr>
               <%
-                }      
+                }
+                auxiliarTitulos = new ArrayList<>(titulo);
+                //removemos un titulo que no nos interesa
+                //Agregamos datos y titulos
+                session.setAttribute("listadoDatos",listaCompleta2);
+                session.setAttribute("listadoTitulos",auxiliarTitulos);
+                //Agregamos detalles
+                session.setAttribute("subtitulo","Estado de la cuenta: "+cuentaAux+", balance: Q"+ creditoCuentaId);            
+                session.setAttribute("nombrePDFSaliente","Estado de la cuenta: "+cuentaAux+", balance: Q"+ creditoCuentaId);
+                session.setAttribute("archivojrxml","reporte-7-columnas");
               %>
           </tbody>
         </table>

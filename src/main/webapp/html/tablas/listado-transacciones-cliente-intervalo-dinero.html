@@ -11,6 +11,15 @@
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista)); 
     
+    auxiliarTitulos = new ArrayList<>(titulo);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Transacciones del cliente ("+clienteAuxiliar+") en el intervalo de dinero: Q"+dinero1+" y Q"+dinero2);            
+    session.setAttribute("nombrePDFSaliente","Transacciones del cliente ("+clienteAuxiliar+") en el intervalo de dinero: Q"+dinero1+" y Q"+dinero2);
+    session.setAttribute("archivojrxml","reporte-7-columnas");
 %>
 <h1>Transacciones del cliente entre el intervalo</h1>
 <h3>Intervalo inicial: Q<%=dinero1%> e Intervalo final: Q<%=dinero2%></h3>
@@ -19,6 +28,7 @@
     if(lista != null && lista.size() > 0){
         //listamos las cuentas porque existen
        %>  
+       <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
         <table class="table">
           <thead class="thead-dark">
             <tr>

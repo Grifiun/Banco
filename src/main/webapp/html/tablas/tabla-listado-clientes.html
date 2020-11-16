@@ -2,43 +2,66 @@
     ArrayList<String> listaDatosClientes = new ArrayList();
     List<ArrayList<String>> listaClientes = cons.obtenerRegistros(query, 
            new ArrayList<String>(listaDatosClientes));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    auxiliarTitulos.remove(auxiliarTitulos.size() - 1);
+    auxiliarTitulos.remove(auxiliarTitulos.size() - 1);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",listaClientes);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Listado clientes");            
+    session.setAttribute("nombrePDFSaliente","Listado clientes");
+    session.setAttribute("archivojrxml","reporte-6-columnas");
 %>
 <h1>Listado clientes</h1>
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-        <%
-                for(int i = 0; i < titulo.size(); i++){
-        %>            
-        <th scope="row"><%=titulo.get(i)%></th>
-        <%
-            }
-        %>
-    </tr>
-  </thead>
-  <tbody>
-      <%
-        for(int i = 0; i < listaClientes.size(); i++){
-      %>
+<%
+    if(listaClientes != null && listaClientes.size() > 0){
+    %> 
+    <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
+    <table class="table">
+      <thead class="thead-dark">
         <tr>
-            <th scope="row"><%=i + 1%></th>
-        <%
-            for(int j = 0; j < listaClientes.get(0).size() - 1; j++){
-        %>
-                <td><%=listaClientes.get(i).get(j)%></td>
+          <th scope="col">#</th>
             <%
-            }
-            
+                    for(int i = 0; i < titulo.size(); i++){
+            %>            
+            <th scope="row"><%=titulo.get(i)%></th>
+            <%
+                }
             %>
-            <td><a href="mostrar-datos-usuario.jsp?tipoQuery=listado-clientes&verUsuario=ver-cliente&codigoUsuario=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">1</a>
-            <a href="gerente-listar-datos.jsp?tipoListado=listado-cuentas&cliente-id=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">2</a>
-            <a href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-por-cliente&codigoUsuario=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">3</a></td><td>
-            <a href="gerente-ingresar-entidad.jsp?tipoEntidad=cuenta&cliente=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">4</a>
-            <a href="gerente-listar-datos.jsp?tipoListado=listado-historial-cambio-datos-usuario&codigoUsuario=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">5</a></td>
         </tr>
-      <%
-        }      
-      %>
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+          <%
+            for(int i = 0; i < listaClientes.size(); i++){
+          %>
+            <tr>
+                <th scope="row"><%=i + 1%></th>
+            <%
+                for(int j = 0; j < listaClientes.get(0).size() - 1; j++){
+            %>
+                    <td><%=listaClientes.get(i).get(j)%></td>
+                <%
+                }
+
+                %>
+                <td><a href="mostrar-datos-usuario.jsp?tipoQuery=listado-clientes&verUsuario=ver-cliente&codigoUsuario=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">1</a>
+                <a href="gerente-listar-datos.jsp?tipoListado=listado-cuentas&cliente-id=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">2</a>
+                <a href="gerente-listar-datos.jsp?tipoListado=listado-transacciones-por-cliente&codigoUsuario=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">3</a></td><td>
+                <a href="gerente-ingresar-entidad.jsp?tipoEntidad=cuenta&cliente=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">4</a>
+                <a href="gerente-listar-datos.jsp?tipoListado=listado-historial-cambio-datos-usuario&codigoUsuario=<%=listaClientes.get(i).get(0)%>" class="btn btn-success">5</a></td>
+            </tr>
+          <%
+            }      
+          %>
+      </tbody>
+    </table>
+        <%
+    }else{
+%>
+    <h3>No hay clientes en el sistema</h3>   
+    <%
+    }
+%>

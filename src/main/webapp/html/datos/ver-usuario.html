@@ -1,5 +1,18 @@
+<%
+    ArrayList<String> auxiliarTitulos1 = new ArrayList<>(identificador);
+    auxiliarTitulos1.remove(auxiliarTitulos1.size() - 1);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos1);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Datos del usuario ("+codigoUsuario+")");            
+    session.setAttribute("nombrePDFSaliente","Datos del usuario ("+codigoUsuario+")");
+    session.setAttribute("archivojrxml","reporte-6-columnas");
 
+%>
 <h1>Datos usuario: <%=lista.get(0).get(0)%></h1>
+<a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
     <div id="accordion">
     <%
         for(int i = 1; i < lista.get(0).size(); i++){

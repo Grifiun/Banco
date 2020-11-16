@@ -6,9 +6,24 @@
     restriccionLista.add(tiempo2R7);
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
+               
+    auxiliarTitulos = new ArrayList<>(titulo);
+    auxiliarTitulos.remove(auxiliarTitulos.size() - 1);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Cajero con mas transferencias hechas en el intervalo de tiempo: "+tiempo1R7+" y "+tiempo2R7);            
+    session.setAttribute("nombrePDFSaliente","Cajero con mas transferencias hechas en el intervalo de tiempo: "+tiempo1R7+" y "+tiempo2R7);
+    session.setAttribute("archivojrxml","reporte-6-columnas");
 %>
 <h1>Cajero con mas transferencias hechas en el intervalo de tiempo</h1>
 <h3>Fecha inicial : <%=tiempo1R7%> y Fecha final : <%=tiempo2R7%></h3>
+<%
+    if(lista != null && lista.size() > 0){
+    %> 
+<a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -44,3 +59,10 @@
       %>
   </tbody>
 </table>
+    <%
+    }else{
+%>
+    <h3>No se han hecho transacciones por cajeros en el intervalo de tiempo ingresado</h3>   
+    <%
+    }
+%>

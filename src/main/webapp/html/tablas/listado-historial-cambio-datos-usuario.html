@@ -4,11 +4,22 @@
     restriccionLista.add(codigoAuxCajero);
     lista = cons.obtenerRegistros(query, 
            new ArrayList<String>(restriccionLista));
+           
+    auxiliarTitulos = new ArrayList<>(titulo);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",lista);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Historial de cambios de dato del usuario: "+codigoAuxCajero);            
+    session.setAttribute("nombrePDFSaliente","Historial de cambios de dato del usuario: "+codigoAuxCajero);
+    session.setAttribute("archivojrxml","reporte-8-columnas");
 %>
 <h1>Historial de cambios de dato del usuario</h1>
 <%
     if(lista != null && lista.size() > 0){
-    %>
+    %>    
+    <a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
     <table class="table">
   <thead class="thead-dark">
     <tr>

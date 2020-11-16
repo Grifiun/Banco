@@ -3,11 +3,22 @@
     listaDatosSolicitudesHechas.add((String) session.getAttribute("codigo"));
     List<ArrayList<String>> listaSolicitudesHechas = cons.obtenerRegistros(query, 
            new ArrayList<String>(listaDatosSolicitudesHechas));
+    
+    auxiliarTitulos = new ArrayList<>(titulo);
+    //removemos un titulo que no nos interesa
+    //Agregamos datos y titulos
+    session.setAttribute("listadoDatos",listaSolicitudesHechas);
+    session.setAttribute("listadoTitulos",auxiliarTitulos);
+    //Agregamos detalles
+    session.setAttribute("subtitulo","Listado solicitudes hechas");            
+    session.setAttribute("nombrePDFSaliente","Listado solicitudes hechas");
+    session.setAttribute("archivojrxml","reporte-5-columnas");
 %>
+<h1>Listado solicitudes hechas</h1>
 <%
     if(listaSolicitudesHechas.size() > 0){
 %>
-<h1>Listado solicitudes hechas</h1>
+<a class="btn btn-dark" href="../ControladorExportarReporte">Exportar</a>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -29,7 +40,7 @@
         <tr>
             <th scope="row"><%=i + 1%></th>
         <%
-            for(int j = 0; j < listaSolicitudesHechas.get(0).size() - 1; j++){
+            for(int j = 0; j < listaSolicitudesHechas.get(0).size(); j++){
         %>
                 <td><%=listaSolicitudesHechas.get(i).get(j)%></td>
             <%
