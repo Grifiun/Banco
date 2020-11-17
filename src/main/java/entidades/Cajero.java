@@ -17,4 +17,13 @@ public class Cajero extends Usuario{
    public Cajero(){
        this.setIdentificador("CAJERO,codigo,nombre,turno,dpi,direccion,sexo,password");
    }
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
+   
 }
