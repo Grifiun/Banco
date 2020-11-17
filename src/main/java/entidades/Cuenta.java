@@ -20,4 +20,30 @@ public class Cuenta extends EntidadBanco{
    public Cuenta(){
        this.setIdentificador("CUENTA,codigo,cliente,creada,credito");
    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getCreada() {
+        return creada;
+    }
+
+    public void setCreada(String creada) {
+        this.creada = creada;
+    }
+
+    public String getCredito() {
+        return credito;
+    }
+
+    public void setCredito(String credito) {
+        this.credito = credito;
+    }
+   
+   
 }

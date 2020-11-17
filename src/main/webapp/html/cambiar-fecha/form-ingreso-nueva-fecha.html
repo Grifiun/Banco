@@ -1,0 +1,33 @@
+<h1>CAMBIAR DATOS DEL SISTEMA</h1>
+<h4>Cambiar fecha</h4>
+<form class="col-12 caja2" method="post" action="ver-nuevos-datos-sistema.jsp" >   
+    <div class="form-group align-self-start">
+        <h5>Ingresar nueva fecha</h5>
+        <input type="date" class="form-control" required placeholder="fecha" name="fecha"/>
+    </div>    
+    <button type="submit" class="btn btn-dark">Guardar</button>
+</form>
+<h4>Cambiar hora</h4>
+<form class="col-12 caja2" method="post" action="ver-nuevos-datos-sistema.jsp" >   
+    <div class="form-group align-self-start">
+        <h5>Ingresar nueva hora</h5>
+        <input type="time" class="form-control" required placeholder="hora" name="hora"/>
+    </div>    
+    <button type="submit" class="btn btn-dark">Guardar</button>
+</form>
+<h4>Cambiar limite por transaccion</h4>
+<form class="col-12 caja2" method="post" action="../ControladorActualizarRegistro?tabla=LIMITE&atributo=monto&restriccion=tipo&tipo=Limite por transaccion" >   
+    <div class="form-group align-self-start">
+        <h5>Ingresar nuevo limite por transaccion</h5>
+        <input type="number" min="1" class="form-control" required placeholder="monto" name="monto"/>
+    </div>    
+    <button type="submit" class="btn btn-dark">Guardar</button>
+</form>
+<h4>Cambiar limite por suma de transaccion</h4>
+<form class="col-12 caja2" method="post" action="../ControladorActualizarRegistro?tabla=LIMITE&atributo=monto&restriccion=tipo&tipo=Limite por suma de transaccion" >   
+    <div class="form-group align-self-start">
+        <h5>Ingresar nuevo limite por suma transaccion</h5>
+        <input type="number" min="1" class="form-control" required placeholder="monto" name="monto"/>
+    </div>    
+    <button type="submit" class="btn btn-dark">Guardar</button>
+</form>

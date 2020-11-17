@@ -22,4 +22,13 @@ public class Gerente extends Usuario{
    public Gerente(){
        this.setIdentificador("GERENTE,codigo,nombre,turno,dpi,direccion,sexo,password");
    }
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
+   
 }
