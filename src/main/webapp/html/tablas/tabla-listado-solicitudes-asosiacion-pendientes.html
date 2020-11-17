@@ -48,8 +48,14 @@
             }
             
             %>
-            <td><a href="../ControladorActualizarRegistro?tabla=ASOCIACION&atributo=estado&valorAtributo=aceptado&estado=aceptado&restriccion=codigo&codigo=<%=listaSolicitudes.get(i).get(0)%>" class="btn btn-success">Aceptar</a>
-                <a class="btn btn-danger" href="../ControladorActualizarRegistro?tabla=ASOCIACION&atributo=estado&valorAtributo=rechazado&&estado=rechazado&restriccion=codigo&codigo=<%=listaSolicitudes.get(i).get(0)%>" class="btn btn-success">Rechazar</a></td>
+            <td>
+                <form method="POST" action="../ControladorActualizarRegistro?tabla=ASOCIACION&atributo=estado&valorAtributo=aceptado&estado=aceptado&restriccion=codigo&codigo=<%=listaSolicitudes.get(i).get(0)%>">
+                    <button type="submit" class="btn btn-success">Aceptar</button>  
+                </form>
+                <form method="POST" action="../ControladorActualizarRegistro?tabla=ASOCIACION&atributo=estado&valorAtributo=rechazado&&estado=rechazado&restriccion=codigo&codigo=<%=listaSolicitudes.get(i).get(0)%>">
+                    <button type="submit" class="btn btn-danger" >Rechazar</button>
+                </form>
+            </td> 
         </tr>
       <%
         }      
